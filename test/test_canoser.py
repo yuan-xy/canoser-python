@@ -9,12 +9,14 @@ def test_uint8():
     assert Uint8.encode(16) == b"\x10"
     assert Uint8.decode_bytes(b"\x10") == 16
     assert Uint8.max_value() == 255
+    assert Uint8.min_value() == 0    
 
 
 def test_int8():
     assert Int8.encode(16) == b"\x10"
     assert Int8.decode_bytes(b"\x10") == 16
     assert Int8.max_value() == 127
+    assert Int8.min_value() == -128
     assert Int8.encode(-1) ==  b"\xFF"
     #assert false == b"\xFF".valid_encoding?   #not a valid utf-8 sequence
     assert Int8.decode_bytes(b"\xFF") == -1

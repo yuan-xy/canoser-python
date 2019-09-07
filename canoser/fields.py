@@ -1,5 +1,5 @@
 import struct
-
+import pdb
 
 class IntType:
     _pack_map = {8: "B", 16: "H", 32: "L", 64: "Q"}
@@ -26,6 +26,18 @@ class IntType:
             return 2**(self.bits-1) - 1
         else:
             return 2**(self.bits) - 1
+
+    def min_value(self):
+        if self.signed:
+            return -2**(self.bits-1)
+        else:
+            return 0
+
+
+    def check_value(self, value):
+    	min, max = self.min_value(), self.max_value()
+    	if value < min or value > max:
+    		raise TypeError('value {} not in range {}-{}'.format(value, min, max))
 
 
 Int8 = IntType(8, True)
