@@ -5,7 +5,6 @@ from canoser import *
 
 class Stock(Struct):
     _fields = [('name', str), ('shares', Uint8)]
-    #_fields = ['name', 'shares']
 
 
 def test_struct_init():
@@ -29,3 +28,12 @@ def test_struct_serialize():
     s2 = Stock.deserialize(bstr)
     assert s2.name == "ACME"
     assert s2.shares == 50
+
+class BoolS(Struct):
+    _fields = [('boolean', bool)]
+
+def test_bool():
+	x = BoolS(True)
+	sx = x.serialize()
+	x2 = BoolS.deserialize(sx)
+	assert x.boolean == x2.boolean

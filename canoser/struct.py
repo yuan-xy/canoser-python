@@ -18,6 +18,8 @@ class TypedProperty:
 def type_mapping(field_type):
     if field_type == str:
         return StrT
+    elif field_type == bool:
+        return BoolT
     else:
         return field_type
 
@@ -69,9 +71,8 @@ class Struct:
 
     def decode(self, cursor):
         for name, atype in self._fields:
-            #pdb.set_trace()
             prop = getattr(self, name)
-            #atype = typed.expected_type
             mtype = type_mapping(atype)
+            assert mtype == prop.expected_type
             value = mtype.decode(cursor)
             prop.__set__(self, value)

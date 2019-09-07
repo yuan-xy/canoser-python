@@ -1,5 +1,6 @@
 from canoser import *
 import pdb
+import pytest
 
 def test_int():
     assert Int8.encode(16) == Uint8.encode(16)
@@ -39,3 +40,11 @@ def test_uint64():
     assert Uint64.encode(16) == b"\x10\x00\x00\x00\x00\x00\x00\x00"
     assert Uint64.encode(0x1234567811223344) == b"\x44\x33\x22\x11\x78\x56\x34\x12" 
     assert Uint64.decode_bytes(b"\x44\x33\x22\x11\x78\x56\x34\x12" ) == 0x1234567811223344
+
+def test_bool():
+    assert BoolT.encode(True) == b"\1"
+    assert BoolT.encode(False) == b"\0"
+    assert BoolT.decode_bytes(b"\1") == True
+    assert BoolT.decode_bytes(b"\0") == False
+    with pytest.raises(TypeError):
+    	BoolT.decode_bytes("\x02")
