@@ -21,6 +21,10 @@ class IntType:
     def decode_bytes(self, bytes):
         return struct.unpack(self.pack_str(), bytes)[0]
 
+    def decode(self, cursor):
+        bytes = cursor.read_bytes(int(self.bits/8))
+        return self.decode_bytes(bytes)
+
     def max_value(self):
         if self.signed:
             return 2**(self.bits-1) - 1
@@ -50,3 +54,21 @@ Uint16 = IntType(16)
 Uint32 = IntType(32)
 Uint64 = IntType(64)
 
+class StrT:
+    @classmethod
+    def encode(self, value):
+        output = b''
+        utf8 = value.encode('utf-8')
+        output += Uint32.encode(len(utf8))
+        output += utf8
+        return output
+    
+    @classmethod
+    def decode(self, cursor):
+        strlen = Uint32.decode(cursor)
+        return str(cursor.read_bytes(strlen), encoding='utf-8')
+
+    @classmethod
+    def check_value(self, value):
+    	if not isinstance(value, str):
+    		raise TypeError('value {} is not string'.format(value))

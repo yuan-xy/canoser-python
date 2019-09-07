@@ -1,4 +1,6 @@
 import pdb
+from canoser.cursor import Cursor
+from canoser.fields import *
 
 class TypedProperty:
     def __init__(self, name, expected_type):
@@ -6,7 +8,6 @@ class TypedProperty:
         self.expected_type = expected_type
 
     def __set__(self, instance, value):
-        #pdb.set_trace()
         check = getattr(self.expected_type, "check_value", None)
         if callable(check):
             check(value)
@@ -14,13 +15,19 @@ class TypedProperty:
             raise TypeError('expected {0}, but {1}'.format(self.expected_type, type(value))) 
         instance.__dict__[self.name] = value
 
+def type_mapping(field_type):
+    if field_type == str:
+        return StrT
+    else:
+        return field_type
+
 
 class Struct:
     _fields = []
 
     def __init__(self, *args, **kwargs):
         for name, atype in self._fields:
-            setattr(self, name, TypedProperty(name, atype))
+            setattr(self, name, TypedProperty(name, type_mapping(atype)))
 
         if len(args) > len(self._fields):
             raise TypeError('Expected {} arguments'.format(len(self._fields)))
@@ -43,3 +50,28 @@ class Struct:
         if kwargs:
             raise TypeError('Invalid argument(s): {}'.format(','.join(kwargs)))
 
+    def serialize(self):
+        output = b''
+        for name, atype in self._fields:
+            value = getattr(self, name)
+            output += type_mapping(atype).encode(value)
+        return output
+
+    @classmethod
+    def deserialize(self, buffer):
+        cursor = Cursor(buffer)
+        ret = self.__new__(self)
+        ret.__init__()
+        ret.decode(cursor)
+        if not cursor.is_finished():
+            raise Error("bytes not all consumed.")
+        return ret
+
+    def decode(self, cursor):
+        for name, atype in self._fields:
+            #pdb.set_trace()
+            prop = getattr(self, name)
+            #atype = typed.expected_type
+            mtype = type_mapping(atype)
+            value = mtype.decode(cursor)
+            prop.__set__(self, value)
