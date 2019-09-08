@@ -66,3 +66,13 @@ def test_map():
     x2 = MapS.deserialize(sx)
     assert x.kvs == x2.kvs
 
+class ChineseMap(Struct):
+    _fields = [('kvs', {str : str})]
+
+def test_map2():
+    x = ChineseMap(kvs = {"中文":"测试"})
+    sx = x.serialize()
+    x2 = ChineseMap.deserialize(sx)
+    assert x.kvs == x2.kvs
+    assert x2.kvs["中文"] == "测试"
+
