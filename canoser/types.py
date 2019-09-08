@@ -128,12 +128,16 @@ class BoolT:
 
 class ArrayT:
 
-    def __init__(self, atype):
+    def __init__(self, atype, fixed_len=None):
         self.atype = atype
+        if fixed_len != None and fixed_len <= 0:
+            raise TypeError("arr len must > 0".format(fixed_len))
+        self.fixed_len = fixed_len
 
     def encode(self, arr):
         output = b""
-        output += Uint32.encode(len(arr))
+        if self.fixed_len == None:
+            output += Uint32.encode(len(arr))
         for item in arr:
             output += self.atype.encode(item)
         return output
@@ -141,12 +145,17 @@ class ArrayT:
 
     def decode(self, cursor):
         arr = []
-        size = Uint32.decode(cursor)
+        if self.fixed_len == None:
+            size = Uint32.decode(cursor)
+        else:
+            size = self.fixed_len
         for _ in range(size):
             arr.append(self.atype.decode(cursor))
         return arr
 
     def check_value(self, arr):
+        if self.fixed_len != None and len(arr) != self.fixed_len:
+            raise TypeError("arr len not match: {}-{}".format(len(arr), self.fixed_len))
         for item in arr:
             self.atype.check_value(item)
 
@@ -164,9 +173,12 @@ class MapT:
     def encode(self, kvs):
         output = b""
         output += Uint32.encode(len(kvs))
+        odict = {}
         for k, v in kvs.items():
-            output += self.ktype.encode(k)
-            output += self.vtype.encode(v)
+            odict[self.ktype.encode(k)] = self.vtype.encode(v)
+        for name in sorted(odict.keys()):
+            output += name
+            output += odict[name]
         return output
 
 

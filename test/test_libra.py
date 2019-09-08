@@ -10,7 +10,7 @@ TEST_VECTOR_1 = "ffffffffffffffff060000006463584d4237640000000000000009000000000
     0000160a05040000001415596903000000c9175a"
 
 class Addr(Struct):
-    _fields = [('addr', [Uint8])]
+    _fields = [('addr', [Uint8, 32])]
 
 
 class Bar(Struct):
@@ -58,9 +58,8 @@ def test_with_libra_case():
         e = kvs
     )
     str1 = foo.serialize()
-    #pdb.set_trace()
     str2 = bytes.fromhex(TEST_VECTOR_1)
-    #assert str1 == str2 
+    assert str1 == str2 
     foo2 = Foo.deserialize(str1)
     assert foo == foo2
 

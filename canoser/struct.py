@@ -11,8 +11,8 @@ class TypedProperty:
         check = getattr(self.expected_type, "check_value", None)
         if callable(check):
             check(value)
-        elif not isinstance(value, self.expected_type):
-            raise TypeError('expected {0}, but {1}'.format(self.expected_type, type(value))) 
+        else:
+            raise TypeError('{} has no check_value method'.format(self.expected_type))
         instance.__dict__[self.name] = value
 
 def type_mapping(field_type):
@@ -22,9 +22,14 @@ def type_mapping(field_type):
         return BoolT
     elif type(field_type) == list:
         if len(field_type) == 0:
-            item = Uint8
+            return ArrayT(Uint8)
         elif len(field_type) == 1:
             item = field_type[0]
+            return ArrayT(type_mapping(item))
+        elif len(field_type) == 2:
+            item = field_type[0]
+            size = field_type[1]
+            return ArrayT(type_mapping(item), size)
         else:
             raise TypeError("Array has one item type, no more.")
         return ArrayT(type_mapping(item))
