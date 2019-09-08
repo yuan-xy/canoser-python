@@ -30,8 +30,8 @@ def type_mapping(field_type):
         return ArrayT(type_mapping(item))
     elif type(field_type) == dict:
         if len(field_type) == 0:
-            ktype = Uint8
-            vtype = Uint8
+            ktype = BytesT
+            vtype = [Uint8]
         elif len(field_type) == 1:
             ktype = next(iter(field_type.keys()))
             vtype = next(iter(field_type.values()))
@@ -83,17 +83,38 @@ class Struct:
     @classmethod
     def deserialize(self, buffer):
         cursor = Cursor(buffer)
-        ret = self.__new__(self)
-        ret.__init__()
-        ret.decode(cursor)
+        ret = self.decode(cursor)
         if not cursor.is_finished():
             raise Error("bytes not all consumed.")
         return ret
 
+    @classmethod
+    def encode(self, value):
+        return value.serialize()
+    
+    @classmethod
     def decode(self, cursor):
-        for name, atype in self._fields:
-            prop = getattr(self, name)
+        ret = self.__new__(self)
+        ret.__init__()
+        for name, atype in ret._fields:
+            prop = getattr(ret, name)
             mtype = type_mapping(atype)
             assert mtype == prop.expected_type
             value = mtype.decode(cursor)
-            prop.__set__(self, value)
+            prop.__set__(ret, value)
+        return ret
+
+    @classmethod
+    def check_value(self, value):
+        if not isinstance(value, self):
+            raise TypeError('value {} is not {} type'.format(value, self))
+
+    def __eq__(self, other): 
+        if type(self) != type(other):
+            return False
+        for name, atype in self._fields:
+            v1 = getattr(self, name)
+            v2 = getattr(other, name)
+            if v1 != v2:
+                return False
+        return True

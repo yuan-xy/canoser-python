@@ -48,3 +48,6 @@ def test_bool():
     assert BoolT.decode_bytes(b"\0") == False
     with pytest.raises(TypeError):
     	BoolT.decode_bytes("\x02")
+
+def test_bytes():
+    assert BytesT.pack(1,2,3) == BytesT.pack(*[1,2,3])
