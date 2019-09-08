@@ -37,3 +37,23 @@ def test_bool():
 	sx = x.serialize()
 	x2 = BoolS.deserialize(sx)
 	assert x.boolean == x2.boolean
+
+class ArrayS(Struct):
+    _fields = [('array', [bool])]
+
+def test_array():
+    x = ArrayS([True, False, True])
+    sx = x.serialize()
+    assert b"\3\0\0\0\1\0\1" == sx
+    x2 = ArrayS.deserialize(sx)
+    pdb.set_trace()
+    assert x.array == x2.array
+
+def test_array_error():
+    with pytest.raises(TypeError):
+        ArrayS.deserialize(b"\3\0\0\0\1\0\2")
+    x = ArrayS([])
+    with pytest.raises(TypeError):
+        x.array = ["abc"]
+    # with pytest.raises(TypeError):
+    #     x.array.append("abc")

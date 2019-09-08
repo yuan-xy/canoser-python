@@ -20,16 +20,27 @@ def type_mapping(field_type):
         return StrT
     elif field_type == bool:
         return BoolT
+    elif type(field_type) == list:
+        if len(field_type) == 0:
+            item = Uint8
+        elif len(field_type) == 1:
+            item = field_type[0]
+        else:
+            raise TypeError("Array has one item type, no more.")
+        return ArrayT(type_mapping(item))
     else:
         return field_type
 
 
 class Struct:
     _fields = []
+    _initialized = False
 
     def __init__(self, *args, **kwargs):
-        for name, atype in self._fields:
-            setattr(self, name, TypedProperty(name, type_mapping(atype)))
+        if not self.__class__._initialized:
+            self.__class__._initialized = True
+            for name, atype in self._fields:
+                setattr(self.__class__, name, TypedProperty(name, type_mapping(atype)))
 
         if len(args) > len(self._fields):
             raise TypeError('Expected {} arguments'.format(len(self._fields)))

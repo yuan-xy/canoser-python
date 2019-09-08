@@ -39,9 +39,9 @@ class IntType:
 
 
     def check_value(self, value):
-    	min, max = self.min_value(), self.max_value()
-    	if value < min or value > max:
-    		raise TypeError('value {} not in range {}-{}'.format(value, min, max))
+        min, max = self.min_value(), self.max_value()
+        if value < min or value > max:
+            raise TypeError('value {} not in range {}-{}'.format(value, min, max))
 
 
 Int8 = IntType(8, True)
@@ -70,8 +70,8 @@ class StrT:
 
     @classmethod
     def check_value(self, value):
-    	if not isinstance(value, str):
-    		raise TypeError('value {} is not string'.format(value))
+        if not isinstance(value, str):
+            raise TypeError('value {} is not string'.format(value))
 
 
 class BoolT:
@@ -85,11 +85,11 @@ class BoolT:
     @classmethod
     def decode_bytes(self, value):
         if value == b'\0':
-        	return False
+            return False
         elif value == b'\1':
-        	return True
+            return True
         else:
-        	raise TypeError("bool should be 0 or 1.")
+            raise TypeError("bool should be 0 or 1.")
 
     @classmethod
     def decode(self, cursor):
@@ -98,5 +98,35 @@ class BoolT:
 
     @classmethod
     def check_value(self, value):
-    	if not isinstance(value, bool):
-    		raise TypeError('value {} is not bool'.format(value))
+        if not isinstance(value, bool):
+            raise TypeError('value {} is not bool'.format(value))
+
+class ArrayT:
+
+    def __init__(self, atype):
+        self.atype = atype
+
+    def encode(self, arr):
+        output = b""
+        output += Uint32.encode(len(arr))
+        for item in arr:
+            output += self.atype.encode(item)
+        return output
+
+
+    def decode(self, cursor):
+        arr = []
+        size = Uint32.decode(cursor)
+        for _ in range(size):
+            arr.append(self.atype.decode(cursor))
+        return arr
+
+    def check_value(self, arr):
+        for item in arr:
+            self.atype.check_value(item)
+
+    def __eq__(self, other): 
+        if not isinstance(other, ArrayT):
+            return False
+        return self.atype == other.atype
+
