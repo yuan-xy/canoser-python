@@ -1,6 +1,6 @@
 import pdb
 from canoser.cursor import Cursor
-from canoser.fields import *
+from canoser.types import *
 
 class TypedProperty:
     def __init__(self, name, expected_type):
