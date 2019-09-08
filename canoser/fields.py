@@ -130,3 +130,38 @@ class ArrayT:
             return False
         return self.atype == other.atype
 
+class MapT:
+
+    def __init__(self, ktype, vtype):
+        self.ktype = ktype
+        self.vtype = vtype
+
+    def encode(self, kvs):
+        output = b""
+        output += Uint32.encode(len(kvs))
+        for k, v in kvs.items():
+            output += self.ktype.encode(k)
+            output += self.vtype.encode(v)
+        return output
+
+
+    def decode(self, cursor):
+        kvs = {}
+        size = Uint32.decode(cursor)
+        for _ in range(size):
+        	k = self.ktype.decode(cursor)
+        	v = self.vtype.decode(cursor)
+        	kvs[k] = v
+        return kvs
+
+    def check_value(self, kvs):
+        for k, v in kvs.items():
+            self.ktype.check_value(k)
+            self.vtype.check_value(v)
+
+    def __eq__(self, other): 
+        if not isinstance(other, MapT):
+            return False
+        return self.ktype == other.ktype and self.vtype == other.vtype
+
+

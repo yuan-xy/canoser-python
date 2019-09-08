@@ -28,6 +28,16 @@ def type_mapping(field_type):
         else:
             raise TypeError("Array has one item type, no more.")
         return ArrayT(type_mapping(item))
+    elif type(field_type) == dict:
+        if len(field_type) == 0:
+            ktype = Uint8
+            vtype = Uint8
+        elif len(field_type) == 1:
+            ktype = next(iter(field_type.keys()))
+            vtype = next(iter(field_type.values()))
+        else:
+            raise TypeError("Map type has one item mapping key type to value type.")
+        return MapT(type_mapping(ktype), type_mapping(vtype))
     else:
         return field_type
 

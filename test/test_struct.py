@@ -46,7 +46,6 @@ def test_array():
     sx = x.serialize()
     assert b"\3\0\0\0\1\0\1" == sx
     x2 = ArrayS.deserialize(sx)
-    pdb.set_trace()
     assert x.array == x2.array
 
 def test_array_error():
@@ -57,3 +56,13 @@ def test_array_error():
         x.array = ["abc"]
     # with pytest.raises(TypeError):
     #     x.array.append("abc")
+
+class MapS(Struct):
+    _fields = [('kvs', {str : Uint64})]
+
+def test_map():
+    x = MapS(kvs = {"count1":123456789, "count2":987654321})
+    sx = x.serialize()
+    x2 = MapS.deserialize(sx)
+    assert x.kvs == x2.kvs
+
