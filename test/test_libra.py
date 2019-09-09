@@ -51,7 +51,7 @@ def test_with_libra_case():
     kvs[BytesT.pack(1)] = [22, 21, 67]
     kvs[BytesT.pack(20, 21, 89, 105)] = [201, 23, 90]
     foo = Foo(
-        a = Uint64.max_value(),
+        a = Uint64.max_value,
         b = [100, 99, 88, 77, 66, 55],
         c = bar,
         d = True,

@@ -9,17 +9,16 @@ def test_int():
 def test_uint8():
     assert Uint8.encode(16) == b"\x10"
     assert Uint8.decode_bytes(b"\x10") == 16
-    assert Uint8.max_value() == 255
-    assert Uint8.min_value() == 0    
+    assert Uint8.max_value == 255
+    assert Uint8.min_value == 0
 
 
 def test_int8():
     assert Int8.encode(16) == b"\x10"
     assert Int8.decode_bytes(b"\x10") == 16
-    assert Int8.max_value() == 127
-    assert Int8.min_value() == -128
+    assert Int8.max_value == 127
+    assert Int8.min_value == -128
     assert Int8.encode(-1) ==  b"\xFF"
-    #assert false == b"\xFF".valid_encoding?   #not a valid utf-8 sequence
     assert Int8.decode_bytes(b"\xFF") == -1
     assert Int8.decode_bytes(b"\x80") == -128
 
@@ -28,7 +27,17 @@ def test_uint16():
     assert Uint16.encode(16) == b"\x10\x00"
     assert Uint16.encode(257) == b"\x01\x01"
     assert Uint16.decode_bytes(b"\x01\x01") == 257
+    assert Uint16.max_value == 65535
+    assert Uint16.min_value == 0
 
+def test_int16():
+    assert Int16.encode(16) == b"\x10\x00"
+    assert Int16.decode_bytes(b"\x10\x00") == 16
+    assert Int16.max_value == 32767
+    assert Int16.min_value == -32768
+    assert Int16.encode(-1) ==  b"\xFF\xFF"
+    assert Int16.decode_bytes(b"\xFF\xFF") == -1
+    assert Int16.decode_bytes(b"\x00\x80") == -32768
 
 def test_uint32():
     assert Uint32.encode(16) == b"\x10\x00\x00\x00"

@@ -24,13 +24,15 @@ class IntType:
     def decode(self, cursor):
         bytes = cursor.read_bytes(int(self.bits/8))
         return self.decode_bytes(bytes)
-
+    
+    @property
     def max_value(self):
         if self.signed:
             return 2**(self.bits-1) - 1
         else:
             return 2**(self.bits) - 1
 
+    @property
     def min_value(self):
         if self.signed:
             return -2**(self.bits-1)
@@ -39,7 +41,7 @@ class IntType:
 
 
     def check_value(self, value):
-        min, max = self.min_value(), self.max_value()
+        min, max = self.min_value, self.max_value
         if value < min or value > max:
             raise TypeError('value {} not in range {}-{}'.format(value, min, max))
 
