@@ -86,11 +86,12 @@ class Struct:
         return output
 
     @classmethod
-    def deserialize(self, buffer):
+    def deserialize(self, buffer, check=True):
         cursor = Cursor(buffer)
         ret = self.decode(cursor)
-        if not cursor.is_finished():
-            raise IOError("bytes not all consumed.")
+        if not cursor.is_finished() and check:
+            raise IOError("bytes not all consumed:{}, {}"\
+                .format(len(buffer),cursor.offset))
         return ret
 
     @classmethod
