@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="canoser",
-    version="0.0.1",
+    version="0.1.1",
     author="yuan xinyu",
     author_email="yuanxinyu.hangzhou@gmail.com",
     description="A python implementation of the LCS(Libra Canonical Serialization) for the Libra network.",

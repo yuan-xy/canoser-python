@@ -71,7 +71,7 @@ class Struct:
                 typed = getattr(self, name)
                 typed.__set__(self, kwargs.pop(name))
             else:
-                print("field `{}` not initialized.".format(name))
+                #print("field `{}` not initialized.".format(name))
                 pass
 
         # Check for any remaining unknown arguments
@@ -90,7 +90,7 @@ class Struct:
         cursor = Cursor(buffer)
         ret = self.decode(cursor)
         if not cursor.is_finished():
-            raise Error("bytes not all consumed.")
+            raise IOError("bytes not all consumed.")
         return ret
 
     @classmethod

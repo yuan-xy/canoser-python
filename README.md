@@ -15,19 +15,9 @@ of the same spec in different languages.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```python
-gem 'canoser'
+```sh
+$ pip install canoser
 ```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install canoser
 
 ## Usage
 
