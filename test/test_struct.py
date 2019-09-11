@@ -76,3 +76,12 @@ def test_map2():
     assert x.kvs == x2.kvs
     assert x2.kvs["中文"] == "测试"
 
+
+class ByteS(Struct):
+    _fields = [('kvs', {bytes : Uint64})]
+
+def test_bytes():
+    x = ByteS(kvs = {b"count1":123456789, b"count2":987654321})
+    sx = x.serialize()
+    x2 = ByteS.deserialize(sx)
+    assert x.kvs == x2.kvs

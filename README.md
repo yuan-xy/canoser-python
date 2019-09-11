@@ -21,10 +21,10 @@ $ pip install canoser
 
 ## Usage
 
-First define a data structure with Canoser, that is, write a class that inherits from "canoser.Struct", and then define the fields owned by the structure through the "define_field" method. This structure naturally has the ability to canonical serialize and deserialize types. For example, the following AccountResource defines a data structure of the same name in the Libra code：
+First define a data structure with Canoser, that is, write a class that inherits from "canoser.Struct", and then define the fields owned by the structure through the "\_fields" array. This structure naturally has the ability to canonical serialize and deserialize types. For example, the following AccountResource defines a data structure of the same name in the Libra code：
 ```python
   #python code，define canoser data structure
-from canoser import Struct
+from canoser import Struct, Uint8, Uint64
 class AccountResource(Struct):
     _fields = [
         ('authentication_key', [Uint8]),

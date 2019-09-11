@@ -17,7 +17,7 @@ $ pip install canoser
 首先用Canoser定义一个数据结构，也就是写一个类继承自"canoser.Struct"，然后通过"_fields"来定义该结构所拥有的字段。该结构自然就拥有了序列化和反序列化的能力。例如下面的AccountResource定义了一个Libra代码中的同名数据结构：
 ```python
 #python代码，利用canoser定义数据结构
-from canoser import Struct
+from canoser import Struct, Uint8, Uint64
 class AccountResource(Struct):
     _fields = [
         ('authentication_key', [Uint8]),

@@ -18,6 +18,8 @@ class TypedProperty:
 def type_mapping(field_type):
     if field_type == str:
         return StrT
+    elif field_type == bytes:
+        return BytesT
     elif field_type == bool:
         return BoolT
     elif type(field_type) == list:
