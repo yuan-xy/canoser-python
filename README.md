@@ -1,6 +1,6 @@
 # Canoser
 
-[中文文档 Chinese document](/README-CN.md)
+[中文文档 Chinese document](/README-CN.md)    [![Build Status](https://travis-ci.org/yuan-xy/canoser-python.svg?branch=master)](https://travis-ci.org/yuan-xy/canoser-python)
 
 A python implementation of the canonical serialization for the Libra network.
 
@@ -94,13 +94,13 @@ The default data type (if not defined) in the array is Uint8. The following two 
 
   class Arr2(Struct):
       _fields = [(addr, [Uint8])]
- 
-```  
+
+```
 Arrays can also define lengths to represent fixed length data. For example, the address in Libra is 256 bits, which is 32 bytes, so it can be defined as follows:
 ```python
   class Address(Struct):
-      _fields = [(addr, [Uint8, 32])] 
-```  
+      _fields = [(addr, [Uint8, 32])]
+```
 When the fixed length data is serialized, the length information is not written to the output.
 
 
@@ -114,7 +114,7 @@ The default data type (if not defined) in the map is an array of Uint8. The foll
   class Map2(Struct):
     _fields = [(addr, {bytes : [Uint8] })]
 
-```  
+```
 
 ### Nested data structure
 The following is a complex example with three data structures:
@@ -137,7 +137,7 @@ class Foo(Struct):
         ('b', [Uint8]),
         ('c', Bar),
         ('d', bool),
-        ('e', {}),        
+        ('e', {}),
     ]
 ```
 This example refers to the test code from canonical serialization in libra.
@@ -154,7 +154,7 @@ bbytes = obj.serialize
 obj = AccountResource.deserialize(bbytes)
 ```
 
-### Get field value from object 
+### Get field value from object
 
 For all fields defined by the "\_fields", the value of this field of an object can be obtained via field_name. such as:
 ```python
