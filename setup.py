@@ -1,11 +1,12 @@
 import setuptools
+from canoser.version import version
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="canoser",
-    version="0.1.3",
+    version=version,
     author="yuan xinyu",
     author_email="yuanxinyu.hangzhou@gmail.com",
     description="A python implementation of the LCS(Libra Canonical Serialization) for the Libra network.",
