@@ -1,6 +1,6 @@
-
 from canoser.cursor import Cursor
-from canoser.types import *
+from canoser.types import StrT, BytesT, BoolT, ArrayT, MapT, Uint8
+
 
 class TypedProperty:
     def __init__(self, name, expected_type):
@@ -14,6 +14,7 @@ class TypedProperty:
         else:
             raise TypeError('{} has no check_value method'.format(self.expected_type))
         instance.__dict__[self.name] = value
+
 
 def type_mapping(field_type):
     if field_type == str:
@@ -72,9 +73,6 @@ class Struct:
             if name in kwargs:
                 typed = getattr(self, name)
                 typed.__set__(self, kwargs.pop(name))
-            else:
-                #print("field `{}` not initialized.".format(name))
-                pass
 
         # Check for any remaining unknown arguments
         if kwargs:
@@ -92,14 +90,13 @@ class Struct:
         cursor = Cursor(buffer)
         ret = self.decode(cursor)
         if not cursor.is_finished() and check:
-            raise IOError("bytes not all consumed:{}, {}"\
-                .format(len(buffer),cursor.offset))
+            raise IOError("bytes not all consumed:{}, {}".format(len(buffer), cursor.offset))
         return ret
 
     @classmethod
     def encode(self, value):
         return value.serialize()
-    
+
     @classmethod
     def decode(self, cursor):
         ret = self.__new__(self)
@@ -117,7 +114,7 @@ class Struct:
         if not isinstance(value, self):
             raise TypeError('value {} is not {} type'.format(value, self))
 
-    def __eq__(self, other): 
+    def __eq__(self, other):
         if type(self) != type(other):
             return False
         for name, atype in self._fields:
