@@ -4,8 +4,6 @@
 [![Build Status](https://travis-ci.org/yuan-xy/canoser-python.svg?branch=master)](https://travis-ci.org/yuan-xy/canoser-python)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
-.. image::
-    :target:
 
 [中文文档 Chinese document](/README-CN.md)
 
