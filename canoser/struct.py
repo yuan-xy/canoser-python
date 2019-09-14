@@ -1,4 +1,4 @@
-import pdb
+
 from canoser.cursor import Cursor
 from canoser.types import *
 

@@ -1,5 +1,5 @@
 import struct
-import pdb
+
 
 class IntType:
     _pack_map = {8: "B", 16: "H", 32: "L", 64: "Q"}
@@ -188,9 +188,9 @@ class MapT:
         kvs = {}
         size = Uint32.decode(cursor)
         for _ in range(size):
-        	k = self.ktype.decode(cursor)
-        	v = self.vtype.decode(cursor)
-        	kvs[k] = v
+            k = self.ktype.decode(cursor)
+            v = self.vtype.decode(cursor)
+            kvs[k] = v
         return kvs
 
     def check_value(self, kvs):
