@@ -1,4 +1,5 @@
-
+
+
 
 class Cursor:
     def __init__(self, buffer, offset=0):
@@ -9,7 +10,6 @@ class Cursor:
         end, total = self.offset + size, len(self.buffer)
         if end > total:
             raise IOError("{} exceed buffer size: {}".format(end, total))
-        ##
         ret = self.buffer[self.offset : end]
         self.offset = end
         return ret
