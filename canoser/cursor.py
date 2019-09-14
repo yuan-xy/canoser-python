@@ -8,7 +8,7 @@ class Cursor:
     def read_bytes(self, size):
     	end, total = self.offset + size, len(self.buffer)
     	if end > total:
-    		raise Error("{} exceed buffer size: {}".format(end, total))
+    		raise IOError("{} exceed buffer size: {}".format(end, total))
     	#pdb.set_trace()
     	ret = self.buffer[self.offset : end]
     	self.offset = end
@@ -17,7 +17,7 @@ class Cursor:
     def peek_bytes(self, size):
     	end, total = self.offset + size, len(self.buffer)
     	if end > total:
-    		raise Error("{} exceed buffer size: {}".format(end, total))
+    		raise IOError("{} exceed buffer size: {}".format(end, total))
     	return self.buffer[self.offset : end]
 
     def is_finished(self):
