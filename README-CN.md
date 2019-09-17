@@ -89,13 +89,15 @@ impl CanonicalSerialize for AccountResource {
   class Arr2(Struct):
       _fields = [(addr, [Uint8])]
 
-```  
+```
 数组还可以定义长度，表示定长数据。比如Libra中的地址是256位，也就是32个字节，所以可以如下定义：
 ```python
   class Address(Struct):
       _fields = [(addr, [Uint8, 32])]
-```  
-定长数据在序列化的时候，不写入长度信息。
+```
+~~定长数据在序列化的时候，不写入长度信息。~~
+似乎Libra取消了定长数组的类型，所有的数组，都带有长度前缀。
+
 
 ### 关于Map类型
 Map里的数据，如果没有定义类型，那么在libra中缺省是字节数组，也就是[Uint8]。
@@ -108,7 +110,7 @@ Map里的数据，如果没有定义类型，那么在libra中缺省是字节数
   class Map2(Struct):
     _fields = [(addr, {bytes : [Uint8] })]
 
-```  
+```
 
 ### 结构嵌套
 下面是一个复杂的例子，包含三个数据结构：
@@ -131,7 +133,7 @@ class Foo(Struct):
         ('b', [Uint8]),
         ('c', Bar),
         ('d', bool),
-        ('e', {}),        
+        ('e', {}),
     ]
 ```
 这个例子参考自libra中canonical serialization的测试代码。

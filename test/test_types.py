@@ -47,7 +47,7 @@ def test_uint32():
 
 def test_uint64():
     assert Uint64.encode(16) == b"\x10\x00\x00\x00\x00\x00\x00\x00"
-    assert Uint64.encode(0x1234567811223344) == b"\x44\x33\x22\x11\x78\x56\x34\x12" 
+    assert Uint64.encode(0x1234567811223344) == b"\x44\x33\x22\x11\x78\x56\x34\x12"
     assert Uint64.decode_bytes(b"\x44\x33\x22\x11\x78\x56\x34\x12" ) == 0x1234567811223344
 
 def test_bool():
@@ -60,3 +60,13 @@ def test_bool():
 
 def test_bytes():
     assert BytesT.pack(1,2,3) == BytesT.pack(*[1,2,3])
+
+def test_array():
+    arrt = ArrayT(Uint8, 2)
+    assert arrt.encode([1, 2]) == b'\x02\x00\x00\x00\x01\x02'
+    arr = arrt.decode(Cursor(b'\x02\x00\x00\x00\x01\x02'))
+    assert arr == [1, 2]
+    with pytest.raises(TypeError):
+        arrt.decode(Cursor(b'\x01\x00\x00\x00\x01\x02'))
+    with pytest.raises(TypeError):
+        arrt.decode(Cursor(b'\x03\x00\x00\x00\x01\x02'))

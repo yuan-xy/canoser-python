@@ -140,18 +140,17 @@ class ArrayT:
 
     def encode(self, arr):
         output = b""
-        if self.fixed_len is None:
-            output += Uint32.encode(len(arr))
+        output += Uint32.encode(len(arr))
         for item in arr:
             output += self.atype.encode(item)
         return output
 
     def decode(self, cursor):
         arr = []
-        if self.fixed_len is None:
-            size = Uint32.decode(cursor)
-        else:
-            size = self.fixed_len
+        size = Uint32.decode(cursor)
+        if self.fixed_len is not None:
+            if size != self.fixed_len:
+                raise TypeError(f"{size} is not equal to predefined value: {self.fixed_len}")
         for _ in range(size):
             arr.append(self.atype.decode(cursor))
         return arr

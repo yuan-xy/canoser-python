@@ -106,8 +106,8 @@ Arrays can also define lengths to represent fixed length data. For example, the 
   class Address(Struct):
       _fields = [(addr, [Uint8, 32])]
 ```
-When the fixed length data is serialized, the length information is not written to the output.
-
+~~When the fixed length data is serialized, the length information is not written to the output.~~
+It seems that libra cancelled the fixed-length array data type.
 
 ### About map type
 The default data type (if not defined) in the map is an array of Uint8. The following two definitions are equivalent:

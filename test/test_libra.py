@@ -5,9 +5,9 @@ from canoser import *
 
 #copy form libra source code
 TEST_VECTOR_1 = "ffffffffffffffff060000006463584d4237640000000000000009000000000102\
-    03040506070805050505050505050505050505050505050505050505050505050505\
-    05050505630000000103000000010000000103000000161543030000000038150300\
-    0000160a05040000001415596903000000c9175a"
+                 03040506070820000000050505050505050505050505050505050505050505050505\
+                 05050505050505056300000001030000000100000001030000001615430300000000\
+                 381503000000160a05040000001415596903000000c9175a"
 
 class Addr(Struct):
     _fields = [('addr', [Uint8, 32])]
@@ -27,7 +27,7 @@ class Foo(Struct):
         ('b', [Uint8]),
         ('c', Bar),
         ('d', bool),
-        ('e', {}),        
+        ('e', {}),
     ]
 
 
@@ -59,7 +59,7 @@ def test_with_libra_case():
     )
     str1 = foo.serialize()
     str2 = bytes.fromhex(TEST_VECTOR_1)
-    assert str1 == str2 
+    assert str1 == str2
     foo2 = Foo.deserialize(str1)
     assert foo == foo2
 
