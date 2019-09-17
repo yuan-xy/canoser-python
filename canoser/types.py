@@ -242,7 +242,6 @@ class OptionalObj:
     def __init__(self, value=None):
         self.value = value
 
-from canoser.struct import type_mapping
 
 class OptionalT:
     def __init__(self, atype):
@@ -275,3 +274,41 @@ class OptionalT:
             return False
         return self.atype == other.atype
 
+
+def type_mapping(field_type):
+    if field_type == str:
+        return StrT
+    elif field_type == bytes:
+        return BytesT
+    elif field_type == bool:
+        return BoolT
+    elif type(field_type) == list:
+        if len(field_type) == 0:
+            return ArrayT(Uint8)
+        elif len(field_type) == 1:
+            item = field_type[0]
+            return ArrayT(type_mapping(item))
+        elif len(field_type) == 2:
+            item = field_type[0]
+            size = field_type[1]
+            return ArrayT(type_mapping(item), size)
+        else:
+            raise TypeError("Array has one item type, no more.")
+        raise AssertionError("unreacheable")
+    elif type(field_type) == dict:
+        if len(field_type) == 0:
+            ktype = BytesT
+            vtype = [Uint8]
+        elif len(field_type) == 1:
+            ktype = next(iter(field_type.keys()))
+            vtype = next(iter(field_type.values()))
+        else:
+            raise TypeError("Map type has one item mapping key type to value type.")
+        return MapT(type_mapping(ktype), type_mapping(vtype))
+    elif type(field_type) == tuple:
+        arr = []
+        for item in field_type:
+            arr.append(type_mapping(item))
+        return TupleT(*arr)
+    else:
+        return field_type

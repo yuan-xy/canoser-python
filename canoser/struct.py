@@ -1,5 +1,5 @@
 from canoser.cursor import Cursor
-from canoser.types import StrT, BytesT, BoolT, ArrayT, MapT, Uint8, TupleT
+from canoser.types import type_mapping
 
 
 class TypedProperty:
@@ -14,45 +14,6 @@ class TypedProperty:
         else:
             raise TypeError('{} has no check_value method'.format(self.expected_type))
         instance.__dict__[self.name] = value
-
-
-def type_mapping(field_type):
-    if field_type == str:
-        return StrT
-    elif field_type == bytes:
-        return BytesT
-    elif field_type == bool:
-        return BoolT
-    elif type(field_type) == list:
-        if len(field_type) == 0:
-            return ArrayT(Uint8)
-        elif len(field_type) == 1:
-            item = field_type[0]
-            return ArrayT(type_mapping(item))
-        elif len(field_type) == 2:
-            item = field_type[0]
-            size = field_type[1]
-            return ArrayT(type_mapping(item), size)
-        else:
-            raise TypeError("Array has one item type, no more.")
-        raise AssertionError("unreacheable")
-    elif type(field_type) == dict:
-        if len(field_type) == 0:
-            ktype = BytesT
-            vtype = [Uint8]
-        elif len(field_type) == 1:
-            ktype = next(iter(field_type.keys()))
-            vtype = next(iter(field_type.values()))
-        else:
-            raise TypeError("Map type has one item mapping key type to value type.")
-        return MapT(type_mapping(ktype), type_mapping(vtype))
-    elif type(field_type) == tuple:
-        arr = []
-        for item in field_type:
-            arr.append(type_mapping(item))
-        return TupleT(*arr)
-    else:
-        return field_type
 
 
 class Struct:
