@@ -107,10 +107,12 @@ Arrays can also define lengths to represent fixed length data. For example, the 
       _fields = [(addr, [Uint8, 32])]
 ```
 ~~When the fixed length data is serialized, the length information is not written to the output.~~
-It seems that libra cancelled the fixed-length array data type.
+It seems that libra cancelled the fixed-length array data type, the length of the array is always write to the output.
 
 ### About map type
-The default data type (if not defined) in the map is an array of Uint8. The following two definitions are equivalent:
+The default data type (if not defined) in the map is an array of Uint8 in Libra, both of key and value.
+But the python language dosn't support the array data type to be the key of a dict, so we change the key type from array of Uint8 to bytes in python, the type of value is unchanged.
+The following two definitions are equivalent:
 ```python
   class Map1(Struct):
     _fields = [(addr, {})]
