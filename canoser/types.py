@@ -7,6 +7,16 @@ class IntType:
         self.bits = bits
         self.signed = signed
 
+    def __str__(self):
+        return self.__repr__()
+
+    def __repr__(self):
+        if self.signed:
+            return f"Int{self.bits}"
+        else:
+            return f"Uint{self.bits}"
+
+
     def pack_str(self):
         endian = '<'
         pack = IntType._pack_map[self.bits]
