@@ -70,3 +70,9 @@ def test_array():
         arrt.decode(Cursor(b'\x01\x00\x00\x00\x01\x02'))
     with pytest.raises(TypeError):
         arrt.decode(Cursor(b'\x03\x00\x00\x00\x01\x02'))
+
+def test_tuple():
+    tuplet = TupleT(StrT, Uint8, BoolT)
+    assert tuplet.encode(("abc", 1, False)) == b'\x03\x00\x00\x00\x61\x62\x63\x01\x00'
+    ret = tuplet.decode(Cursor(b'\x03\x00\x00\x00\x61\x62\x63\x01\x00'))
+    assert ret == ("abc", 1, False)

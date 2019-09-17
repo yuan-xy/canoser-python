@@ -77,6 +77,7 @@ impl CanonicalSerialize for AccountResource {
 | bytes |  | Binary String |
 | [] | 支持 | 数组类型 |
 | {} | 支持 |  Map类型 |
+| () | 支持 |  Tuple元组类型 |
 | A canoser.Struct |  | 嵌套的另外一个结构（不能循环引用） |
 
 ### 关于数组类型

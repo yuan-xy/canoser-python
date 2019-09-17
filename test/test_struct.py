@@ -85,3 +85,14 @@ def test_bytes():
     sx = x.serialize()
     x2 = ByteS.deserialize(sx)
     assert x.kvs == x2.kvs
+
+class TupleS(Struct):
+    _fields = [('tp', (str, Uint8, bool, Int16))]
+
+def test_tuple_struct():
+    x = TupleS(tp = ("abc", 1, False, 2))
+    assert TupleS.tp.expected_type == TupleT(StrT, Uint8, BoolT, Int16)
+    sx = x.serialize()
+    assert sx == b'\x03\x00\x00\x00\x61\x62\x63\x01\x00\x02\x00'
+    x2 = TupleS.deserialize(sx)
+    assert x.tp == x2.tp

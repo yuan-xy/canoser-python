@@ -1,6 +1,5 @@
 from canoser.cursor import Cursor
-from canoser.types import StrT, BytesT, BoolT, ArrayT, MapT, Uint8
-
+from canoser.types import StrT, BytesT, BoolT, ArrayT, MapT, Uint8, TupleT
 
 class TypedProperty:
     def __init__(self, name, expected_type):
@@ -46,6 +45,11 @@ def type_mapping(field_type):
         else:
             raise TypeError("Map type has one item mapping key type to value type.")
         return MapT(type_mapping(ktype), type_mapping(vtype))
+    elif type(field_type) == tuple:
+        arr = []
+        for item in field_type:
+            arr.append(type_mapping(item))
+        return TupleT(*arr)
     else:
         return field_type
 

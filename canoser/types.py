@@ -1,6 +1,5 @@
 import struct
 
-
 class IntType:
     _pack_map = {8: "B", 16: "H", 32: "L", 64: "Q"}
 
@@ -202,3 +201,38 @@ class MapT:
         if not isinstance(other, MapT):
             return False
         return self.ktype == other.ktype and self.vtype == other.vtype
+
+
+class TupleT:
+
+    def __init__(self, *ttypes):
+        self.ttypes = ttypes
+
+    def encode(self, value):
+        output = b""
+        zipped = zip(self.ttypes, value)
+        for k, v in zipped:
+            output += k.encode(v)
+        return output
+
+    def decode(self, cursor):
+        arr = []
+        for k in self.ttypes:
+            arr.append(k.decode(cursor))
+        return tuple(arr)
+
+    def check_value(self, value):
+        if len(value) != len(self.ttypes):
+            raise TypeError(f"{len(value)} is not equal to {len(self.ttypes)}")
+        zipped = zip(self.ttypes, value)
+        for k, v in zipped:
+            k.check_value(v)
+
+    def __eq__(self, other):
+        if not isinstance(other, TupleT):
+            return False
+        zipped = zip(self.ttypes, other.ttypes)
+        for t1, t2 in zipped:
+            if t1 != t2:
+                return False
+        return True

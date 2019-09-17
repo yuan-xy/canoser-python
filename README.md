@@ -88,6 +88,7 @@ In Canoser, after defining the data structure, you don't need to write code to i
 | bytes |  | Binary String |
 | [] | supported | Array Type |
 | {} | supported |  Map Type |
+| () | supported |  Tuple Type |
 | A canoser.Struct |  | Another structure nested (cannot be recycled) |
 
 ### About Array Type
