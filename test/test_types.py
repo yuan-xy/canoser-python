@@ -76,3 +76,11 @@ def test_tuple():
     assert tuplet.encode(("abc", 1, False)) == b'\x03\x00\x00\x00\x61\x62\x63\x01\x00'
     ret = tuplet.decode(Cursor(b'\x03\x00\x00\x00\x61\x62\x63\x01\x00'))
     assert ret == ("abc", 1, False)
+
+def test_optional():
+    optional = OptionalT(Uint8)
+    assert optional.encode(OptionalObj()) == b'\x00'
+    assert optional.encode(OptionalObj(8)) == b'\x01\x08'
+    assert optional.decode(Cursor(b'\x01\x08')).value == 8
+    assert optional.decode(Cursor(b'\x00')).value == None
+

@@ -1,6 +1,7 @@
 from canoser.cursor import Cursor
 from canoser.types import StrT, BytesT, BoolT, ArrayT, MapT, Uint8, TupleT
 
+
 class TypedProperty:
     def __init__(self, name, expected_type):
         self.name = name
@@ -34,7 +35,7 @@ def type_mapping(field_type):
             return ArrayT(type_mapping(item), size)
         else:
             raise TypeError("Array has one item type, no more.")
-        return ArrayT(type_mapping(item))
+        raise AssertionError("unreacheable")
     elif type(field_type) == dict:
         if len(field_type) == 0:
             ktype = BytesT
@@ -58,11 +59,15 @@ class Struct:
     _fields = []
     _initialized = False
 
+    @classmethod
+    def initailize_fields_type(cls):
+        if not cls._initialized:
+            cls._initialized = True
+            for name, atype in cls._fields:
+                setattr(cls, name, TypedProperty(name, type_mapping(atype)))
+
     def __init__(self, *args, **kwargs):
-        if not self.__class__._initialized:
-            self.__class__._initialized = True
-            for name, atype in self._fields:
-                setattr(self.__class__, name, TypedProperty(name, type_mapping(atype)))
+        self.__class__.initailize_fields_type()
 
         if len(args) > len(self._fields):
             raise TypeError('Expected {} arguments'.format(len(self._fields)))
