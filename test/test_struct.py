@@ -121,3 +121,15 @@ class OptionalS2(Struct):
 def test_optional_struct():
     OptionalS2.initailize_fields_type()
     assert OptionalS2.opt.expected_type == OptionalT(StrT)
+
+class EnumS(Struct):
+    _fields = [('enum', EnumT(opt1=None, opt2=str))]
+
+def test_enum_struct():
+    EnumS.initailize_fields_type()
+    assert EnumS.enum.expected_type == EnumT(opt1=None, opt2=StrT)
+    x = EnumS(EnumObj(0))
+    sx = x.serialize()
+    assert sx == b'\x00\x00\x00\x00'
+    x2 = EnumS.deserialize(sx)
+    assert x.enum.index == x2.enum.index

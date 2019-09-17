@@ -275,6 +275,47 @@ class OptionalT:
         return self.atype == other.atype
 
 
+
+
+class EnumObj:
+    def __init__(self, index, value=None):
+        self.index = index
+        self.value = value
+
+
+class EnumT:
+    def __init__(self, **kwargs):
+        self.names = list(kwargs.keys())
+        self.types = [type_mapping(t) for t in kwargs.values()]
+
+    def encode(self, enum):
+        ret = Uint32.encode(enum.index)
+        if self.types[enum.index] is not None:
+            ret += self.types[enum.index].encode(enum.value)
+        return ret
+
+    def decode(self, cursor):
+        index = Uint32.decode(cursor)
+        if self.types[index] is not None:
+            value = self.types[index].decode(cursor)
+            return EnumObj(index, value)
+        else:
+            return EnumObj(index)
+
+    def check_value(self, enum):
+        if not isinstance(enum, EnumObj):
+            raise TypeError(f"{enum} is not instance of EnumObj")
+        if enum.index < 0 or enum.index >= len(self.types):
+            raise TypeError(f"{enum.index} out of range:[0, {len(self.types)})")
+        if self.types[enum.index] is not None:
+            self.types[enum.index].check_value(enum.value)
+
+    def __eq__(self, other):
+        if not isinstance(other, EnumT):
+            return False
+        return self.types == other.types
+
+
 def type_mapping(field_type):
     if field_type == str:
         return StrT
