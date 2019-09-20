@@ -133,3 +133,20 @@ def test_enum_struct():
     assert sx == b'\x00\x00\x00\x00'
     x2 = EnumS.deserialize(sx)
     assert x.enum.index == x2.enum.index
+
+MyEnum = EnumT(opt1=None, opt3=[[str]])
+
+class EnumS2(Struct):
+    _fields = [('enum', MyEnum)]
+
+def test_enum_struct2():
+    EnumS2.initailize_fields_type()
+    assert EnumS2.enum.expected_type == EnumT(opt1=None, opt3=[[StrT]])
+    x = EnumS2(EnumObj(MyEnum.opt3, [['ab', 'c'], ['d'], []]))
+    sx = x.serialize()
+    assert sx == b'\x01\x00\x00\x00\x03\x00\x00\x00' +\
+        b'\x02\x00\x00\x00' + b'\x02\x00\x00\x00ab' + b'\x01\x00\x00\x00c' +\
+        b'\x01\x00\x00\x00' + b'\x01\x00\x00\x00d' + b'\x00\x00\x00\x00'
+    x2 = EnumS2.deserialize(sx)
+    assert x.enum.index == x2.enum.index
+    assert x.enum.value == x2.enum.value

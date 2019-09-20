@@ -325,6 +325,9 @@ class EnumT:
             return False
         return self.types == other.types
 
+    def __getattr__(self, name):
+        return self.names.index(name)
+
 
 def type_mapping(field_type):
     if field_type == str:
