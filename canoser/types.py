@@ -288,6 +288,7 @@ class OptionalT:
 
 
 class EnumObj:
+    #TODO: how to associate a EnumObj with EnumT
     def __init__(self, index, value=None):
         self.index = index
         self.value = value

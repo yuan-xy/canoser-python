@@ -1,9 +1,4 @@
-# Canoser
-[![Canoser](https://img.shields.io/pypi/v/canoser.svg)](https://pypi.org/project/canoser/)
-[![python](https://img.shields.io/pypi/pyversions/canoser.svg)](https://pypi.org/project/canoser/)
-[![Build Status](https://travis-ci.org/yuan-xy/canoser-python.svg?branch=master)](https://travis-ci.org/yuan-xy/canoser-python)
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-
+# Canoser [![Canoser](https://img.shields.io/pypi/v/canoser.svg)](https://pypi.org/project/canoser/) [![python](https://img.shields.io/pypi/pyversions/canoser.svg)](https://pypi.org/project/canoser/) [![Build Status](https://travis-ci.org/yuan-xy/canoser-python.svg?branch=master)](https://travis-ci.org/yuan-xy/canoser-python) [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 [中文文档 Chinese document](/README-CN.md)
 

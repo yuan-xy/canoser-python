@@ -2,7 +2,9 @@ import setuptools
 from canoser.version import version
 
 with open("README.md", "r") as fh:
-    long_description = fh.read()
+    content = fh.read()
+    arr = content.split("\n")
+    long_description = "\n".join(arr[4:])
 
 setuptools.setup(
     name="canoser",
