@@ -83,31 +83,3 @@ def test_optional():
     assert optional.encode(OptionalObj(8)) == b'\x01\x08'
     assert optional.decode(Cursor(b'\x01\x08')).value == 8
     assert optional.decode(Cursor(b'\x00')).value == None
-
-def test_enum():
-    enumt = EnumT(opt1=Uint32, opt2=Uint16)
-    assert enumt.names == ['opt1','opt2']
-    assert enumt.opt1 == 0
-    assert enumt.opt2 == 1
-    assert enumt.encode(EnumObj(enumt.opt1, 5)) == b'\x00\x00\x00\x00\x05\x00\x00\x00'
-    assert enumt.encode(EnumObj(1, 6)) == b'\x01\x00\x00\x00\x06\x00'
-    obj = enumt.decode(Cursor(b'\x00\x00\x00\x00\x05\x00\x00\x00'))
-    assert obj.index == 0
-    assert obj.value == 5
-    assert obj.index == enumt.opt1
-    # assert obj.name == 'opt1'
-    obj = enumt.decode(Cursor(b'\x01\x00\x00\x00\x06\x00'))
-    assert obj.index == 1
-    assert obj.value == 6
-    assert obj.index == enumt.opt2
-
-def test_enum2():
-    enumt = EnumT(opt1=[Uint8], opt2=None)
-    assert enumt.encode(EnumObj(0, [5])) == b'\x00\x00\x00\x00\x01\x00\x00\x00\x05'
-    assert enumt.encode(EnumObj(enumt.opt2)) == b'\x01\x00\x00\x00'
-    obj = enumt.decode(Cursor(b'\x00\x00\x00\x00\x01\x00\x00\x00\x05'))
-    assert obj.index == 0
-    assert obj.value == [5]
-    obj = enumt.decode(Cursor(b'\x01\x00\x00\x00'))
-    assert obj.index == 1
-    assert obj.value == None

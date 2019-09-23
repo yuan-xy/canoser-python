@@ -8,12 +8,22 @@ class TypedProperty:
         self.expected_type = expected_type
 
     def __set__(self, instance, value):
-        check = getattr(self.expected_type, "check_value", None)
+        TypedProperty.check_type(self.expected_type, value)
+        instance.__dict__[self.name] = value
+
+    @staticmethod
+    def check_type(datatype, value):
+        if datatype is None:
+            if value is not None:
+                raise TypeError(f'{datatype} mismatch {value}')
+            else:
+                return
+        check = getattr(datatype, "check_value", None)
         if callable(check):
             check(value)
         else:
-            raise TypeError('{} has no check_value method'.format(self.expected_type))
-        instance.__dict__[self.name] = value
+            raise TypeError('{} has no check_value method'.format(datatype))
+
 
 
 class Struct:
@@ -64,12 +74,12 @@ class Struct:
         return ret
 
     @classmethod
-    def encode(self, value):
+    def encode(cls, value):
         return value.serialize()
 
     @classmethod
-    def decode(self, cursor):
-        ret = self.__new__(self)
+    def decode(cls, cursor):
+        ret = cls.__new__(cls)
         ret.__init__()
         for name, atype in ret._fields:
             prop = getattr(ret, name)
@@ -80,9 +90,9 @@ class Struct:
         return ret
 
     @classmethod
-    def check_value(self, value):
-        if not isinstance(value, self):
-            raise TypeError('value {} is not {} type'.format(value, self))
+    def check_value(cls, value):
+        if not isinstance(value, cls):
+            raise TypeError('value {} is not {} type'.format(value, cls))
 
     def __eq__(self, other):
         if type(self) != type(other):

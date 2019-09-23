@@ -4,3 +4,5 @@ from canoser.types import (  # noqa: F401
 )
 from canoser.cursor import Cursor  # noqa: F401
 from canoser.struct import Struct  # noqa: F401
+from canoser.rust_enum import RustEnum  # noqa: F401
+
