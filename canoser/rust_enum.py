@@ -17,7 +17,8 @@ class RustEnum:
 
     @classmethod
     def new(cls, index, value):
-        #TODO index out of bound
+        if not cls._enums:
+            raise TypeError(f'{cls} has no _enums defined.')
         if index < 0 or index >= len(cls._enums):
             raise TypeError(f"index{index} out of bound:0-{len(cls._enums)-1}")
         _name, datatype = cls._enums[index]
@@ -30,12 +31,9 @@ class RustEnum:
         self.value_type = type_mapping(datatype)
         self.value = value
 
-    def __init__(self, **kwargs):
+    def __init__(self, name, value=None):
         if not self.__class__._enums:
             raise TypeError(f'{self.__class__} has no _enums defined.')
-        if len(kwargs) != 1:
-            raise TypeError('Invalid argument(s): {}'.format(','.join(kwargs)))
-        name, value = kwargs.popitem()
         index = self.__class__.get_index(name)
         _name, datatype = self._enums[index]
         if name != _name:

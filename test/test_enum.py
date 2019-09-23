@@ -19,17 +19,15 @@ def test_invalid():
     with pytest.raises(TypeError):
         t_arg = TransactionArgument()
     with pytest.raises(TypeError):
-        x = TransactionArgument(UU64=0)
-    with pytest.raises(TypeError):
-        x = TransactionArgument(U64=0, String="a")
+        x = TransactionArgument('UU64', 0)
     with pytest.raises(TypeError):
         class NotDefineEnum(RustEnum):
             pass
-        x = NotDefineEnum(X=0)
+        x = NotDefineEnum('X')
 
 
 def test_enum():
-    t_arg = TransactionArgument(U64=2)
+    t_arg = TransactionArgument('U64', 2)
     assert t_arg.index == 0
     assert t_arg.value == 2
     assert t_arg.U64 == True
@@ -40,7 +38,7 @@ def test_enum():
         t_arg.value = 'abc'
     with pytest.raises(TypeError):
         t_arg.index = 2
-    arg2 = TransactionArgument(String='abc')
+    arg2 = TransactionArgument('String', 'abc')
     assert arg2.index == 2
     assert arg2.value == 'abc'
     assert arg2.String == True
@@ -61,10 +59,9 @@ class Enum1(RustEnum):
 
 
 def test_enum2():
-    #pdb.set_trace()
     e1 = Enum1.new(0, [5])
-    e2 = Enum1(opt2=None)
-    assert Enum1.new(1, None) == Enum1(opt2=None)
+    e2 = Enum1('opt2', None)
+    assert Enum1.new(1, None) == Enum1('opt2')
     assert Enum1.encode(e1) == b'\x00\x00\x00\x00\x01\x00\x00\x00\x05'
     assert Enum1.encode(e2) == b'\x01\x00\x00\x00'
     obj = Enum1.decode(Cursor(b'\x00\x00\x00\x00\x01\x00\x00\x00\x05'))
@@ -84,7 +81,7 @@ class EStruct(Struct):
 def test_enum_struct():
     EStruct.initailize_fields_type()
     assert EStruct.enum.expected_type == Enum2
-    x = EStruct(Enum2(opt1=None))
+    x = EStruct(Enum2('opt1'))
     sx = x.serialize()
     assert sx == b'\x00\x00\x00\x00'
     x2 = EStruct.deserialize(sx)
@@ -101,7 +98,7 @@ class EStruct2(Struct):
 def test_enum_struct2():
     EStruct2.initailize_fields_type()
     assert EStruct2.enum.expected_type == MyEnum
-    x = EStruct2(MyEnum(opt3 = [['ab', 'c'], ['d'], []]))
+    x = EStruct2(MyEnum('opt3', [['ab', 'c'], ['d'], []]))
     sx = x.serialize()
     assert sx == b'\x01\x00\x00\x00\x03\x00\x00\x00' +\
         b'\x02\x00\x00\x00' + b'\x02\x00\x00\x00ab' + b'\x01\x00\x00\x00c' +\
