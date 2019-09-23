@@ -73,3 +73,40 @@ def test_enum2():
     obj = Enum1.decode(Cursor(b'\x01\x00\x00\x00'))
     assert obj.index == 1
     assert obj.value == None
+
+class Enum2(RustEnum):
+    _enums = [('opt1', None), ('opt2', str)]
+
+
+class EStruct(Struct):
+    _fields = [('enum', Enum2)]
+
+def test_enum_struct():
+    EStruct.initailize_fields_type()
+    assert EStruct.enum.expected_type == Enum2
+    x = EStruct(Enum2(opt1=None))
+    sx = x.serialize()
+    assert sx == b'\x00\x00\x00\x00'
+    x2 = EStruct.deserialize(sx)
+    assert x.enum.index == x2.enum.index
+    assert x.enum.value == x2.enum.value
+
+
+class MyEnum(RustEnum):
+    _enums = [('opt1', None), ('opt3', [[str]])]
+
+class EStruct2(Struct):
+    _fields = [('enum', MyEnum)]
+
+def test_enum_struct2():
+    EStruct2.initailize_fields_type()
+    assert EStruct2.enum.expected_type == MyEnum
+    x = EStruct2(MyEnum(opt3 = [['ab', 'c'], ['d'], []]))
+    sx = x.serialize()
+    assert sx == b'\x01\x00\x00\x00\x03\x00\x00\x00' +\
+        b'\x02\x00\x00\x00' + b'\x02\x00\x00\x00ab' + b'\x01\x00\x00\x00c' +\
+        b'\x01\x00\x00\x00' + b'\x01\x00\x00\x00d' + b'\x00\x00\x00\x00'
+    x2 = EStruct2.deserialize(sx)
+    assert x.enum.index == x2.enum.index
+    assert x.enum.value == x2.enum.value
+
