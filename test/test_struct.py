@@ -100,24 +100,3 @@ def test_tuple_struct():
     assert x.tp == x2.tp
     with pytest.raises(TypeError):
         x.tp = ()
-
-
-class OptionalS(Struct):
-    _fields = [('opt', OptionalT(Int8))]
-
-def test_optional_struct():
-    x = OptionalS(opt = OptionalObj(-1))
-    assert OptionalS.opt.expected_type == OptionalT(Int8)
-    sx = x.serialize()
-    assert sx == b'\x01\xff'
-    x2 = OptionalS.deserialize(sx)
-    assert x.opt.value == x2.opt.value
-    with pytest.raises(TypeError):
-        x.opt = -1
-
-class OptionalS2(Struct):
-    _fields = [('opt', OptionalT(str))]
-
-def test_optional_struct():
-    OptionalS2.initailize_fields_type()
-    assert OptionalS2.opt.expected_type == OptionalT(StrT)

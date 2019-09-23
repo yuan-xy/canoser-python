@@ -248,44 +248,6 @@ class TupleT:
         return True
 
 
-class OptionalObj:
-    def __init__(self, value=None):
-        self.value = value
-
-
-class OptionalT:
-    def __init__(self, atype):
-        self.atype = type_mapping(atype)
-
-    def encode(self, optional):
-        if optional.value is not None:
-            ret = BoolT.encode(True)
-            ret += self.atype.encode(optional.value)
-            return ret
-        else:
-            return BoolT.encode(False)
-
-    def decode(self, cursor):
-        exist = BoolT.decode(cursor)
-        if exist:
-            value = self.atype.decode(cursor)
-            return OptionalObj(value)
-        else:
-            return OptionalObj()
-
-    def check_value(self, opt):
-        if not isinstance(opt, OptionalObj):
-            raise TypeError(f"{opt} is not instance of OptionalObj")
-        if opt.value is not None:
-            self.atype.check_value(opt.value)
-
-    def __eq__(self, other):
-        if not isinstance(other, OptionalT):
-            return False
-        return self.atype == other.atype
-
-
-
 def type_mapping(field_type):
     if field_type == str:
         return StrT
