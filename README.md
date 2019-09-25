@@ -188,6 +188,35 @@ e1 = Enum1.new(0, [5])
 e1 = Enum1('opt1', [5])
 ```
 
+### About optional type
+An optional type in libra is a nullable data either exists in its full representation or does not. For example,
+
+```
+optional_data: Option(uint8); // Rust/Libra
+uint8 *optional_data; // C
+```
+It has similar semantics meaning with the following enum type:
+```
+enum Option<uint8> {
+    Some(uint8),
+    None,
+}
+```
+
+To define a optional with Canoser, first write a class that inherits from "canoser.RustOptional", and then define the types owned by RustOptional through the "\_type" field. For example,
+
+```python
+class OptionUInt(RustOptional):
+    _type = Uint8
+
+null = OptionUInt(None)
+obj = OptionUInt(8)
+assert obj.value == 8
+```
+
+The RustOptional type in canoser is similar to `typing.Optional` in python. Note that this is not the same concept as an optional argument, which is one that has a default.
+
+
 ### Nested data structure
 The following is a complex example with three data structures:
 ```python
