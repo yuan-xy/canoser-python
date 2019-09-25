@@ -45,6 +45,8 @@ def test_enum():
     assert arg2.U64 == False
     assert arg2.value_type == StrT
     assert arg2.__class__ == t_arg.__class__
+    arg2.value = 'Bcd'
+    assert arg2.value == 'Bcd'
     with pytest.raises(TypeError):
         t_arg.value = 'abc'
     with pytest.raises(TypeError):

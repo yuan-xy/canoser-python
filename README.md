@@ -84,7 +84,9 @@ In Canoser, after defining the data structure, you don't need to write code to i
 | [] | supported | Array Type |
 | {} | supported |  Map Type |
 | () | supported |  Tuple Type |
-| A canoser.Struct |  | Another structure nested (cannot be recycled) |
+| canoser.Struct |  | Another structure nested (cannot be recycled) |
+| RustEnum |  | Enum type |
+| RustOptional |  | Optional type |
 
 ### About Array Type
 The default data type (if not defined) in the array is Uint8. The following two definitions are equivalent:
@@ -119,6 +121,73 @@ The following two definitions are equivalent:
 
 ```
 
+### About enum type
+In python and C, enum is just enumerated constants. But in Libra(Rust), a enum has a type constant and a optional Value. A rust enumeration is typically represented as:
+
+```
+enum SomeDataType {
+  type0(u32),
+  type1(u64),
+  type2
+}
+```
+
+To define a enum with Canoser, first write a class that inherits from "canoser.RustEnum", and then define the types owned by the enum through the "\_enums" array.
+For example, the following TransactionArgument defines a data structure of the same name in the Libra code. The argument of a transaction can be one of the four types: Uint64 or Address or String or IntArray.：
+
+```python
+class TransactionArgument(RustEnum):
+    _enums = [
+        ('U64', Uint64),
+        ('Address', [Uint8, ADDRESS_LENGTH]),
+        ('String', str),
+        ('ByteArray', [Uint8])
+    ]
+```
+You can instantiate an enum obj and call its method and properties like this:
+
+```python
+    arg2 = TransactionArgument('String', 'abc')
+    assert arg2.index == 2
+    assert arg2.value == 'abc'
+    assert arg2.String == True
+    assert arg2.U64 == False
+```
+
+Every RustEnum object has an `index` property and a `value` property. After instantiated, the `index` can't be modified. You can only modify the `value` of an enum with correct data type.
+
+For example, the following code is valid:
+
+```python
+    arg2 = TransactionArgument('String', 'abc')
+    arg2.value == 'Bcd'
+```
+
+For example, the following code is invalid:
+```python
+    arg2.index = 0      #raise an exception
+    arg2.value = [3]    #raise an exception
+```
+
+The RustEnum can have a enum without value type, which represented by `None`.
+
+```python
+class Enum1(RustEnum):
+    _enums = [('opt1', [Uint8]), ('opt2', None)]
+
+e2 = Enum1('opt2', None)
+#or
+e2 = Enum1('opt2')
+```
+
+You can also instantiate a RustEnum object by index and value.
+
+```python
+e1 = Enum1.new(0, [5])
+# which is equivalent to
+e1 = Enum1('opt1', [5])
+```
+
 ### Nested data structure
 The following is a complex example with three data structures:
 ```python
@@ -144,6 +213,7 @@ class Foo(Struct):
     ]
 ```
 This example refers to the test code from canonical serialization in libra.
+
 
 ### Serialization and deserialization
 After defining canoser.Struct, you don't need to implement serialization and deserialization code yourself, you can directly call the default implementation of the base class. Take the AccountResource structure as an example:
