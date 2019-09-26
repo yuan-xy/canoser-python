@@ -263,7 +263,114 @@ For all fields defined by the "\_fields", the value of this field of an object c
 obj.authentication_key
 ```
 
+## Notice
 
+### Must define canoser struct by serialized fields and sequence, not the definition in the rust struct.
+
+For example, the SignedTransaction in Libra is defined as following code:
+
+```rust
+pub struct SignedTransaction {
+    raw_txn: RawTransaction,
+    public_key: Ed25519PublicKey,
+    signature: Ed25519Signature,
+    transaction_length: usize,
+}
+```
+But field `transaction_length` doesn't write to the output.
+
+```rust
+impl CanonicalSerialize for SignedTransaction {
+    fn serialize(&self, serializer: &mut impl CanonicalSerializer) -> Result<()> {
+        serializer
+            .encode_struct(&self.raw_txn)?
+            .encode_bytes(&self.public_key.to_bytes())?
+            .encode_bytes(&self.signature.to_bytes())?;
+        Ok(())
+    }
+}
+```
+
+So we define SignedTransaction in canoser as following code:
+```python
+class SignedTransaction(canoser.Struct):
+    _fields = [
+        ('raw_txn', RawTransaction),
+        ('public_key', [Uint8, ED25519_PUBLIC_KEY_LENGTH]),
+        ('signature', [Uint8, ED25519_SIGNATURE_LENGTH])
+    ]
+```
+
+Here is another example. The definition sequence and serialize sequence is opposite in  `WriteOp`
+
+```rust
+pub enum WriteOp {
+    Value(Vec<u8>),
+    Deletion,
+}
+
+enum WriteOpType {
+    Deletion = 0,
+    Value = 1,
+}
+
+impl CanonicalSerialize for WriteOp {
+    fn serialize(&self, serializer: &mut impl CanonicalSerializer) -> Result<()> {
+        match self {
+            WriteOp::Deletion => serializer.encode_u32(WriteOpType::Deletion as u32)?,
+            WriteOp::Value(value) => {
+                serializer.encode_u32(WriteOpType::Value as u32)?;
+                serializer.encode_vec(value)?
+            }
+        };
+        Ok(())
+    }
+}
+```
+
+So, we define `WriteOp` as follow:
+```python
+class WriteOp(RustEnum):
+    _enums = [
+        ('Deletion', None),
+        ('Value', [Uint8])
+    ]
+
+```
+
+
+### Rust tuple struct like Address and ByteArray has no fields, so just define them as a direct type, not struct.
+
+Tuple struct is like `typedef` other than struct.
+
+```rust
+pub struct AccountAddress([u8; ADDRESS_LENGTH]);
+pub struct ByteArray(Vec<u8>);
+```
+
+Maybe we can design a proper syntax for such type alias, but now, just use the raw type in canoser. Insted of define an `AccountAddress` struct like this:
+
+```python
+class AccountAddress(canoser.Struct):
+    #not supported
+
+class TransactionArgument(RustEnum):
+    _enums = [
+        ('U64', Uint64),
+        ('Address', AccountAddress),    #not supported
+        ...
+    ]
+```
+
+Just code like this:
+```python
+class TransactionArgument(RustEnum):
+    _enums = [
+        ('U64', Uint64),
+        ('Address', [Uint8, ADDRESS_LENGTH]),
+        ...
+    ]
+```
 
 ## License
 
