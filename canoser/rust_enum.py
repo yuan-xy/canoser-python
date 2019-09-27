@@ -1,3 +1,4 @@
+from canoser.base import Base
 from canoser.cursor import Cursor
 from canoser.types import type_mapping
 from canoser.struct import TypedProperty
@@ -7,7 +8,7 @@ from io import StringIO
 
 import pdb
 
-class RustEnum:
+class RustEnum(Base):
     _enums = []
 
     @classmethod
@@ -81,14 +82,6 @@ class RustEnum:
             return cls.new(index, None)
 
     @classmethod
-    def deserialize(self, buffer, check=True):
-        cursor = Cursor(buffer)
-        ret = self.decode(cursor)
-        if not cursor.is_finished() and check:
-            raise IOError("bytes not all consumed:{}, {}".format(len(buffer), cursor.offset))
-        return ret
-
-    @classmethod
     def check_value(cls, value):
         if not isinstance(value, cls):
             raise TypeError('value {} is not {} type'.format(value, cls))
@@ -106,8 +99,5 @@ class RustEnum:
 
     def _pretty_print(self, concat, ident):
         concat.write(self.enum_name)
-        pprint = getattr(self.value, "_pretty_print", None)
-        if callable(pprint):
-            self.value._pretty_print(concat, ident)
-        else:
-            concat.write(f'{self.value}')
+        self._pretty_print_obj(self.value, concat, ident)
+

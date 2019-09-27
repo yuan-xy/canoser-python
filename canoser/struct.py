@@ -1,3 +1,4 @@
+from canoser.base import Base
 from canoser.cursor import Cursor
 from canoser.types import type_mapping
 from io import StringIO
@@ -28,7 +29,7 @@ class TypedProperty:
 
 
 
-class Struct:
+class Struct(Base):
     _fields = []
     _initialized = False
 
@@ -60,24 +61,14 @@ class Struct:
         if kwargs:
             raise TypeError('Invalid argument(s): {}'.format(','.join(kwargs)))
 
-    def serialize(self):
+
+    @classmethod
+    def encode(cls, obj):
         output = b''
-        for name, atype in self._fields:
-            value = getattr(self, name)
+        for name, atype in obj._fields:
+            value = getattr(obj, name)
             output += type_mapping(atype).encode(value)
         return output
-
-    @classmethod
-    def deserialize(self, buffer, check=True):
-        cursor = Cursor(buffer)
-        ret = self.decode(cursor)
-        if not cursor.is_finished() and check:
-            raise IOError("bytes not all consumed:{}, {}".format(len(buffer), cursor.offset))
-        return ret
-
-    @classmethod
-    def encode(cls, value):
-        return value.serialize()
 
     @classmethod
     def decode(cls, cursor):
@@ -106,10 +97,6 @@ class Struct:
                 return False
         return True
 
-    def __str__(self):
-        concat = StringIO()
-        self._pretty_print(concat, 0)
-        return concat.getvalue()
 
     def _pretty_print(self, concat, ident):
         prefix_blank = '  '
@@ -120,13 +107,8 @@ class Struct:
             value = getattr(self, name)
             concat.write(prefix_blank*ident_inner)
             concat.write(f'{name}: ')
-            pprint = getattr(value, "_pretty_print", None)
-            if callable(pprint):
-                value._pretty_print(concat, ident_inner)
-            else:
-                concat.write(f'{value}')
+            self._pretty_print_obj(value, concat, ident_inner)
             concat.write(',\n')
         concat.write(prefix_blank*ident)
         concat.write('}')
 
- 

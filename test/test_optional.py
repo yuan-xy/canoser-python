@@ -12,6 +12,8 @@ def test_optional():
     assert OptionUInt.encode(obj) == b'\x01\x08'
     assert OptionUInt.decode(Cursor(b'\x01\x08')).value == 8
     assert OptionUInt.decode(Cursor(b'\x00')).value == None
+    assert obj.serialize() == b'\x01\x08'
+    assert obj == OptionUInt.deserialize(obj.serialize())
     with pytest.raises(TypeError):
         obj.value = -1
     with pytest.raises(TypeError):

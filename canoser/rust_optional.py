@@ -1,3 +1,4 @@
+from canoser.base import Base
 from canoser.cursor import Cursor
 from canoser.types import type_mapping
 from canoser.struct import TypedProperty
@@ -5,7 +6,7 @@ from canoser import *
 
 import pdb
 
-class RustOptional:
+class RustOptional(Base):
     _type = None
 
     def __init__(self, value=None):

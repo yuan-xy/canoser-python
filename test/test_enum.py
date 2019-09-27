@@ -33,6 +33,8 @@ def test_enum():
     assert t_arg.U64 == True
     assert t_arg.enum_name == 'U64'
     assert t_arg.value_type == Uint64
+    assert t_arg.serialize() == b"\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00"
+    assert t_arg == TransactionArgument.deserialize(t_arg.serialize())
     t_arg.value = 3
     assert t_arg.value == 3
     with pytest.raises(TypeError):
