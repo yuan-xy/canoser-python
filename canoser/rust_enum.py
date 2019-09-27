@@ -2,6 +2,8 @@ from canoser.cursor import Cursor
 from canoser.types import type_mapping
 from canoser.struct import TypedProperty
 from canoser import *
+from io import StringIO
+
 
 import pdb
 
@@ -56,6 +58,11 @@ class RustEnum:
     def index(self):
         return self._index
 
+    @property
+    def enum_name(self):
+        name, _ = self.__class__._enums[self._index]
+        return name
+
     @classmethod
     def encode(cls, enum):
         ret = Uint32.encode(enum.index)
@@ -74,6 +81,14 @@ class RustEnum:
             return cls.new(index, None)
 
     @classmethod
+    def deserialize(self, buffer, check=True):
+        cursor = Cursor(buffer)
+        ret = self.decode(cursor)
+        if not cursor.is_finished() and check:
+            raise IOError("bytes not all consumed:{}, {}".format(len(buffer), cursor.offset))
+        return ret
+
+    @classmethod
     def check_value(cls, value):
         if not isinstance(value, cls):
             raise TypeError('value {} is not {} type'.format(value, cls))
@@ -83,3 +98,16 @@ class RustEnum:
         if not isinstance(other, self.__class__):
             return False
         return self.index == other.index and self.value == other.value
+
+    def __str__(self):
+        concat = StringIO()
+        self._pretty_print(concat, 0)
+        return concat.getvalue()
+
+    def _pretty_print(self, concat, ident):
+        concat.write(self.enum_name)
+        pprint = getattr(self.value, "_pretty_print", None)
+        if callable(pprint):
+            self.value._pretty_print(concat, ident)
+        else:
+            concat.write(f'{self.value}')

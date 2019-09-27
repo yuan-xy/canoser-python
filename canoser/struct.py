@@ -1,5 +1,7 @@
 from canoser.cursor import Cursor
 from canoser.types import type_mapping
+from io import StringIO
+
 
 
 class TypedProperty:
@@ -103,3 +105,28 @@ class Struct:
             if v1 != v2:
                 return False
         return True
+
+    def __str__(self):
+        concat = StringIO()
+        self._pretty_print(concat, 0)
+        return concat.getvalue()
+
+    def _pretty_print(self, concat, ident):
+        prefix_blank = '  '
+        #concat.write(prefix_blank*ident)
+        concat.write('{\n')
+        ident_inner = ident+1
+        for name, atype in self._fields:
+            value = getattr(self, name)
+            concat.write(prefix_blank*ident_inner)
+            concat.write(f'{name}: ')
+            pprint = getattr(value, "_pretty_print", None)
+            if callable(pprint):
+                value._pretty_print(concat, ident_inner)
+            else:
+                concat.write(f'{value}')
+            concat.write(',\n')
+        concat.write(prefix_blank*ident)
+        concat.write('}')
+
+ 

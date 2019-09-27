@@ -62,4 +62,3 @@ def test_with_libra_case():
     assert str1 == str2
     foo2 = Foo.deserialize(str1)
     assert foo == foo2
-
