@@ -10,7 +10,6 @@ class Address(DelegateT):
 
     @classmethod
     def _pretty_print_obj(cls, obj, concat, ident):
-        pdb.set_trace()
         hex = struct.pack("<{}B".format(len(obj)), *obj).hex()
         concat.write(hex)
 

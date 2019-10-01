@@ -295,6 +295,8 @@ class TupleT:
         zipped = zip(cls.ttypes, obj)
         for k, v in zipped:
             concat.write(prefix_blank*ident_inner)
+            if issubclass(k, Base):
+                concat.write(f'{k.__name__} ')
             k._pretty_print_obj(v, concat, ident_inner)
             concat.write(',\n')
         concat.write(prefix_blank*ident)
