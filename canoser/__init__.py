@@ -6,4 +6,4 @@ from canoser.cursor import Cursor  # noqa: F401
 from canoser.struct import Struct  # noqa: F401
 from canoser.rust_enum import RustEnum  # noqa: F401
 from canoser.rust_optional import RustOptional  # noqa: F401
-
+from canoser.delegate_t import DelegateT  # noqa: F401
