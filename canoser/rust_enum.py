@@ -1,12 +1,9 @@
 from canoser.base import Base
 from canoser.cursor import Cursor
-from canoser.types import type_mapping
+from canoser.types import *
 from canoser.struct import TypedProperty
-from canoser import *
 from io import StringIO
 
-
-import pdb
 
 class RustEnum(Base):
     _enums = []
@@ -86,18 +83,14 @@ class RustEnum(Base):
         if not isinstance(value, cls):
             raise TypeError('value {} is not {} type'.format(value, cls))
 
-
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
         return self.index == other.index and self.value == other.value
 
-    def __str__(self):
-        concat = StringIO()
-        self._pretty_print(concat, 0)
-        return concat.getvalue()
-
-    def _pretty_print(self, concat, ident):
-        concat.write(self.enum_name)
-        self._pretty_print_obj(self.value, concat, ident)
+    @classmethod
+    def _pretty_print_obj(cls, obj, concat, ident):
+        concat.write(obj.enum_name)
+        if obj.value is not None:
+            obj.value_type._pretty_print_obj(obj.value, concat, ident)
 

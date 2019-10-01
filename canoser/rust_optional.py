@@ -1,10 +1,8 @@
 from canoser.base import Base
 from canoser.cursor import Cursor
-from canoser.types import type_mapping
+from canoser.types import *
 from canoser.struct import TypedProperty
-from canoser import *
 
-import pdb
 
 class RustOptional(Base):
     _type = None
@@ -53,6 +51,11 @@ class RustOptional(Base):
             return False
         return self.value == other.value
 
-
+    @classmethod
+    def _pretty_print_obj(cls, obj, concat, ident):
+        if obj.value is None:
+            concat.write('None')
+        else:
+            obj.value_type._pretty_print_obj(obj.value, concat, ident)
 
 

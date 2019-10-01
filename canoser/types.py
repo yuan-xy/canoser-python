@@ -1,4 +1,6 @@
 import struct
+from canoser.base import Base
+
 
 class IntType:
     _pack_map = {8: "B", 16: "H", 32: "L", 64: "Q"}
@@ -16,6 +18,9 @@ class IntType:
         else:
             return f"Uint{self.bits}"
 
+    @classmethod
+    def _pretty_print_obj(cls, value, concat, ident):
+        concat.write(f'{value}')
 
     def pack_str(self):
         endian = '<'
@@ -84,6 +89,10 @@ class StrT:
         if not isinstance(value, str):
             raise TypeError('value {} is not string'.format(value))
 
+    @classmethod
+    def _pretty_print_obj(cls, value, concat, ident):
+        concat.write(f'{value}')
+
 
 class BytesT:
     @classmethod
@@ -109,6 +118,10 @@ class BytesT:
     def check_value(self, value):
         if not isinstance(value, bytes):
             raise TypeError('value {} is not bytes'.format(value))
+
+    @classmethod
+    def _pretty_print_obj(cls, value, concat, ident):
+        concat.write(f'{value}')
 
 
 class BoolT:
@@ -137,6 +150,10 @@ class BoolT:
     def check_value(self, value):
         if not isinstance(value, bool):
             raise TypeError('value {} is not bool'.format(value))
+
+    @classmethod
+    def _pretty_print_obj(cls, value, concat, ident):
+        concat.write(f'{value}')
 
 
 class ArrayT:
@@ -175,6 +192,18 @@ class ArrayT:
             return False
         return self.atype == other.atype
 
+    def _pretty_print_obj(cls, obj, concat, ident):
+        # import pdb
+        # pdb.set_trace()
+        prefix_blank = '  '
+        concat.write('[\n')
+        ident_inner = ident+1
+        for _, item in enumerate(obj):
+            concat.write(prefix_blank*ident_inner)
+            cls.atype._pretty_print_obj(item, concat, ident_inner)
+            concat.write(',\n')
+        concat.write(prefix_blank*ident)
+        concat.write(']')
 
 class MapT:
 
@@ -212,6 +241,18 @@ class MapT:
             return False
         return self.ktype == other.ktype and self.vtype == other.vtype
 
+    def _pretty_print_obj(cls, obj, concat, ident):
+        prefix_blank = '  '
+        concat.write('{\n')
+        ident_inner = ident+1
+        for k,v in obj.items():
+            concat.write(prefix_blank*ident_inner)
+            concat.write(f'{k}: ')
+            cls.vtype._pretty_print_obj(v, concat, ident_inner)
+            concat.write(',\n')
+        concat.write(prefix_blank*ident)
+        concat.write('}')
+
 
 class TupleT:
 
@@ -246,6 +287,19 @@ class TupleT:
             if t1 != t2:
                 return False
         return True
+
+    def _pretty_print_obj(cls, obj, concat, ident):
+        prefix_blank = '  '
+        concat.write('(\n')
+        ident_inner = ident+1
+        zipped = zip(cls.ttypes, obj)
+        for k, v in zipped:
+            concat.write(prefix_blank*ident_inner)
+            k._pretty_print_obj(v, concat, ident_inner)
+            concat.write(',\n')
+        concat.write(prefix_blank*ident)
+        concat.write(')')
+
 
 
 def type_mapping(field_type):
