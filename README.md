@@ -293,7 +293,7 @@ class Address(DelegateT):
 
 class TransactionArgument(RustEnum):
     _enums = [
-        ('U64', Uint64),
+        ...
         ('Address', AccountAddress),
         ...
     ]
@@ -375,7 +375,13 @@ class WriteOp(RustEnum):
 
 ```
 
+## Related Projects
 
+[Libra Core](https://github.com/libra/libra)
+
+[A Ruby implementation of the LCS(Libra Canonical Serialization)](https://github.com/yuan-xy/canoser-ruby)
+
+[A Python implementation of client APIs and command-line tools for the Libra network](https://github.com/yuan-xy/libra-client)
 
 ## License
 
