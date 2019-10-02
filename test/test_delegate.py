@@ -11,7 +11,7 @@ class Address(DelegateT):
     @classmethod
     def _pretty_print_obj(cls, obj, concat, ident):
         hex = struct.pack("<{}B".format(len(obj)), *obj).hex()
-        concat.write(hex)
+        concat.write(f'"{hex}"')
 
 
 class AddrStruct(Struct):
@@ -27,4 +27,10 @@ def test_array():
     sx = x.serialize()
     x2 = AddrStruct.deserialize(sx)
     assert x.addr == x2.addr
+    print(x2)
+    assert x2.__str__() == """{
+  addr: "0505050505050505050505050505050505050505050505050505050505050505",
+}"""
+    assert AddrStruct.addr.expected_type.dtype().atype == Uint8
+    assert AddrStruct.addr.expected_type.dtype().fixed_len == ADDRESS_LENGTH
 

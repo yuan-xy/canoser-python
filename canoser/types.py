@@ -193,17 +193,19 @@ class ArrayT:
         return self.atype == other.atype
 
     def _pretty_print_obj(cls, obj, concat, ident):
-        # import pdb
-        # pdb.set_trace()
-        prefix_blank = '  '
-        concat.write('[\n')
-        ident_inner = ident+1
-        for _, item in enumerate(obj):
-            concat.write(prefix_blank*ident_inner)
-            cls.atype._pretty_print_obj(item, concat, ident_inner)
-            concat.write(',\n')
-        concat.write(prefix_blank*ident)
-        concat.write(']')
+        if cls.atype == Uint8:
+            hex = struct.pack("<{}B".format(len(obj)), *obj).hex()
+            concat.write(hex)
+        else:
+            prefix_blank = '  '
+            concat.write('[\n')
+            ident_inner = ident+1
+            for _, item in enumerate(obj):
+                concat.write(prefix_blank*ident_inner)
+                cls.atype._pretty_print_obj(item, concat, ident_inner)
+                concat.write(',\n')
+            concat.write(prefix_blank*ident)
+            concat.write(']')
 
 class MapT:
 

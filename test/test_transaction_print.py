@@ -14,19 +14,9 @@ ED25519_SIGNATURE_LENGTH = 64
 class Address(DelegateT):
     delegate_type = [Uint8, ADDRESS_LENGTH]
 
-    @classmethod
-    def _pretty_print_obj(cls, obj, concat, ident):
-        hex = struct.pack("<{}B".format(len(obj)), *obj).hex()
-        concat.write(hex)
-
 
 class ByteArray(DelegateT):
     delegate_type = [Uint8]
-
-    @classmethod
-    def _pretty_print_obj(cls, obj, concat, ident):
-        hex = struct.pack("<{}B".format(len(obj)), *obj).hex()
-        concat.write(hex)
 
 
 class TransactionArgument(RustEnum):
@@ -120,27 +110,15 @@ def test_readme_example4():
   sender: 3a24a61e05d129cace9e0efc8bc9e33831fec9a9be66f50fd352a2638a49b9ee,
   sequence_number: 32,
   payload: Program: {
-    code: [
-      109,
-      111,
-      118,
-      101,
-    ],
+    code: 6d6f7665,
     args: [
       String: CAFE D00D,
       String: cafe d00d,
     ],
     modules: [
-      [
-        202,
-      ],
-      [
-        254,
-        208,
-      ],
-      [
-        13,
-      ],
+      ca,
+      fed0,
+      0d,
     ],
   },
   max_gas_amount: 10000,
