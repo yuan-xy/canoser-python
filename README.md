@@ -263,6 +263,43 @@ For all fields defined by the "\_fields", the value of this field of an object c
 obj.authentication_key
 ```
 
+
+## Rust Tuple Struct
+Struct like Address and ByteArray has no fields:
+
+```rust
+pub struct Address([u8; ADDRESS_LENGTH]);
+pub struct ByteArray(Vec<u8>);
+```
+
+These struct called `tuple struct` in `Rust` programming language. Tuple struct is like `typedef` other than struct in `C` like programming languages.
+
+You can just define them as a direct type, no struct. Just code like this:
+```python
+class TransactionArgument(RustEnum):
+    _enums = [
+        ...
+        ('Address', [Uint8, ADDRESS_LENGTH]),
+        ...
+    ]
+```
+
+Or you can define an `Address` class which inherit from `canoser.DelegateT` and has a `delegate_type` field with type `[Uint8, ADDRESS_LENGTH]`:
+
+```python
+class Address(DelegateT):
+    delegate_type = [Uint8, ADDRESS_LENGTH]
+
+
+class TransactionArgument(RustEnum):
+    _enums = [
+        ('U64', Uint64),
+        ('Address', AccountAddress),
+        ...
+    ]
+```
+
+
 ## Notice
 
 ### Must define canoser struct by serialized fields and sequence, not the definition in the rust struct.
@@ -339,38 +376,6 @@ class WriteOp(RustEnum):
 ```
 
 
-### Rust tuple struct like Address and ByteArray has no fields, so just define them as a direct type, not struct.
-
-Tuple struct is like `typedef` other than struct.
-
-```rust
-pub struct AccountAddress([u8; ADDRESS_LENGTH]);
-pub struct ByteArray(Vec<u8>);
-```
-
-Maybe we can design a proper syntax for such type alias, but now, just use the raw type in canoser. Insted of define an `AccountAddress` struct like this:
-
-```python
-class AccountAddress(canoser.Struct):
-    #not supported
-
-class TransactionArgument(RustEnum):
-    _enums = [
-        ('U64', Uint64),
-        ('Address', AccountAddress),    #not supported
-        ...
-    ]
-```
-
-Just code like this:
-```python
-class TransactionArgument(RustEnum):
-    _enums = [
-        ('U64', Uint64),
-        ('Address', [Uint8, ADDRESS_LENGTH]),
-        ...
-    ]
-```
 
 ## License
 
