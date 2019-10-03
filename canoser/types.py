@@ -236,6 +236,8 @@ class MapT:
         return kvs
 
     def check_value(self, kvs):
+        if not isinstance(kvs, dict):
+            raise TypeError(f"{kvs} is not a dict.")
         for k, v in kvs.items():
             self.ktype.check_value(k)
             self.vtype.check_value(v)
@@ -279,6 +281,8 @@ class TupleT:
     def check_value(self, value):
         if len(value) != len(self.ttypes):
             raise TypeError(f"{len(value)} is not equal to {len(self.ttypes)}")
+        if not isinstance(value, tuple):
+            raise TypeError(f"{value} is not a tuple.")
         zipped = zip(self.ttypes, value)
         for k, v in zipped:
             k.check_value(v)
