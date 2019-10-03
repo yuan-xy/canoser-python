@@ -60,6 +60,7 @@ def test_bool():
 
 def test_bytes():
     assert BytesT.pack(1,2,3) == BytesT.pack(*[1,2,3])
+    assert BytesT.pack(1,2,3) == bytes([1,2,3])
 
 def test_array():
     arrt = ArrayT(Uint8, 2)
