@@ -57,6 +57,18 @@ def test_array_error():
     # with pytest.raises(TypeError):
     #     x.array.append("abc")
 
+
+class ArrayUint8(Struct):
+    _fields = [('array', [Uint8])]
+
+def test_array():
+    with pytest.raises(TypeError):
+        x = ArrayUint8(b'')
+    x = ArrayUint8([])
+    with pytest.raises(TypeError):
+        x.array = b''
+
+
 class MapS(Struct):
     _fields = [('kvs', {str : Uint64})]
 

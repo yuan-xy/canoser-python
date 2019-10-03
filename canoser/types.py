@@ -184,6 +184,8 @@ class ArrayT:
     def check_value(self, arr):
         if self.fixed_len is not None and len(arr) != self.fixed_len:
             raise TypeError("arr len not match: {}-{}".format(len(arr), self.fixed_len))
+        if not isinstance(arr, list):
+            raise TypeError(f"{arr} is not a list.")
         for item in arr:
             self.atype.check_value(item)
 
