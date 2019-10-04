@@ -8,8 +8,10 @@ Canoser是facebook推出的Libra网络中使用的规范序列化LCS(Libra Canon
 
 ## 安装
 
+需要系统安装了Python 3.6及以上版本。
+
 ```sh
-$ pip install canoser
+$ python3 -m pip install canoser
 ```
 
 ## 使用

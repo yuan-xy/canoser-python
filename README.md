@@ -15,9 +15,12 @@ of the same spec in different languages.
 
 ## Installation
 
+Require python 3.6 or above installed.
+
 ```sh
-$ pip install canoser
+$ python3 -m pip install canoser
 ```
+
 
 ## Usage
 
