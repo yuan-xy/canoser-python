@@ -19,8 +19,8 @@ class IntType:
             return f"Uint{self.bits}"
 
     @classmethod
-    def _pretty_print_obj(cls, value, concat, ident):
-        concat.write(f'{value}')
+    def _pretty_print_obj(cls, value, buffer, ident):
+        buffer.write(f'{value}')
 
     def pack_str(self):
         endian = '<'
@@ -90,8 +90,8 @@ class StrT:
             raise TypeError('value {} is not string'.format(value))
 
     @classmethod
-    def _pretty_print_obj(cls, value, concat, ident):
-        concat.write(f'{value}')
+    def _pretty_print_obj(cls, value, buffer, ident):
+        buffer.write(f'{value}')
 
 
 class BytesT:
@@ -120,8 +120,8 @@ class BytesT:
             raise TypeError('value {} is not bytes'.format(value))
 
     @classmethod
-    def _pretty_print_obj(cls, value, concat, ident):
-        concat.write(f'{value}')
+    def _pretty_print_obj(cls, value, buffer, ident):
+        buffer.write(f'{value}')
 
 
 class BoolT:
@@ -152,8 +152,8 @@ class BoolT:
             raise TypeError('value {} is not bool'.format(value))
 
     @classmethod
-    def _pretty_print_obj(cls, value, concat, ident):
-        concat.write(f'{value}')
+    def _pretty_print_obj(cls, value, buffer, ident):
+        buffer.write(f'{value}')
 
 
 class ArrayT:
@@ -194,20 +194,20 @@ class ArrayT:
             return False
         return self.atype == other.atype
 
-    def _pretty_print_obj(cls, obj, concat, ident):
+    def _pretty_print_obj(cls, obj, buffer, ident):
         if cls.atype == Uint8:
             hex = struct.pack("<{}B".format(len(obj)), *obj).hex()
-            concat.write(hex)
+            buffer.write(hex)
         else:
             prefix_blank = '  '
-            concat.write('[\n')
+            buffer.write('[\n')
             ident_inner = ident+1
             for _, item in enumerate(obj):
-                concat.write(prefix_blank*ident_inner)
-                cls.atype._pretty_print_obj(item, concat, ident_inner)
-                concat.write(',\n')
-            concat.write(prefix_blank*ident)
-            concat.write(']')
+                buffer.write(prefix_blank*ident_inner)
+                cls.atype._pretty_print_obj(item, buffer, ident_inner)
+                buffer.write(',\n')
+            buffer.write(prefix_blank*ident)
+            buffer.write(']')
 
 class MapT:
 
@@ -247,17 +247,17 @@ class MapT:
             return False
         return self.ktype == other.ktype and self.vtype == other.vtype
 
-    def _pretty_print_obj(cls, obj, concat, ident):
+    def _pretty_print_obj(cls, obj, buffer, ident):
         prefix_blank = '  '
-        concat.write('{\n')
+        buffer.write('{\n')
         ident_inner = ident+1
         for k,v in obj.items():
-            concat.write(prefix_blank*ident_inner)
-            concat.write(f'{k}: ')
-            cls.vtype._pretty_print_obj(v, concat, ident_inner)
-            concat.write(',\n')
-        concat.write(prefix_blank*ident)
-        concat.write('}')
+            buffer.write(prefix_blank*ident_inner)
+            buffer.write(f'{k}: ')
+            cls.vtype._pretty_print_obj(v, buffer, ident_inner)
+            buffer.write(',\n')
+        buffer.write(prefix_blank*ident)
+        buffer.write('}')
 
 
 class TupleT:
@@ -296,19 +296,19 @@ class TupleT:
                 return False
         return True
 
-    def _pretty_print_obj(cls, obj, concat, ident):
+    def _pretty_print_obj(cls, obj, buffer, ident):
         prefix_blank = '  '
-        concat.write('(\n')
+        buffer.write('(\n')
         ident_inner = ident+1
         zipped = zip(cls.ttypes, obj)
         for k, v in zipped:
-            concat.write(prefix_blank*ident_inner)
+            buffer.write(prefix_blank*ident_inner)
             if issubclass(k, Base):
-                concat.write(f'{k.__name__} ')
-            k._pretty_print_obj(v, concat, ident_inner)
-            concat.write(',\n')
-        concat.write(prefix_blank*ident)
-        concat.write(')')
+                buffer.write(f'{k.__name__} ')
+            k._pretty_print_obj(v, buffer, ident_inner)
+            buffer.write(',\n')
+        buffer.write(prefix_blank*ident)
+        buffer.write(')')
 
 
 

@@ -98,18 +98,18 @@ class Struct(Base):
         return True
 
     @classmethod
-    def _pretty_print_obj(cls, obj, concat, ident):
+    def _pretty_print_obj(cls, obj, buffer, ident):
         #TODO obj should be instance of cls
         prefix_blank = '  '
-        #concat.write(prefix_blank*ident)
-        concat.write('{\n')
+        #buffer.write(prefix_blank*ident)
+        buffer.write('{\n')
         ident_inner = ident+1
         for name, atype in obj._fields:
             value = getattr(obj, name)
-            concat.write(prefix_blank*ident_inner)
-            concat.write(f'{name}: ')
-            type_mapping(atype)._pretty_print_obj(value, concat, ident_inner)
-            concat.write(',\n')
-        concat.write(prefix_blank*ident)
-        concat.write('}')
+            buffer.write(prefix_blank*ident_inner)
+            buffer.write(f'{name}: ')
+            type_mapping(atype)._pretty_print_obj(value, buffer, ident_inner)
+            buffer.write(',\n')
+        buffer.write(prefix_blank*ident)
+        buffer.write('}')
 

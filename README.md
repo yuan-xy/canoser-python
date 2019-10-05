@@ -302,6 +302,13 @@ class TransactionArgument(RustEnum):
     ]
 ```
 
+Do not instantiate a `canoser.DelegateT` type in assaignment, for example:
+
+```python
+transactionArgument.address = [...] #ok
+transactionArgument.address = Address([...])  #error
+```
+
 
 ## Notice
 

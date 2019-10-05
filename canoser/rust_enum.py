@@ -89,9 +89,9 @@ class RustEnum(Base):
         return self.index == other.index and self.value == other.value
 
     @classmethod
-    def _pretty_print_obj(cls, obj, concat, ident):
-        concat.write(obj.enum_name)
+    def _pretty_print_obj(cls, obj, buffer, ident):
+        buffer.write(obj.enum_name)
         if obj.value is not None:
-            concat.write(": ")
-            obj.value_type._pretty_print_obj(obj.value, concat, ident)
+            buffer.write(": ")
+            obj.value_type._pretty_print_obj(obj.value, buffer, ident)
 
