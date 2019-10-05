@@ -1,6 +1,11 @@
+import struct
+
+
 class Cursor:
     def __init__(self, buffer, offset=0):
         self.buffer = buffer
+        if isinstance(buffer, list):
+            self.buffer = struct.pack("<{}B".format(len(buffer)),*buffer)
         self.offset = offset
 
     def read_bytes(self, size):

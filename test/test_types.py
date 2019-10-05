@@ -72,6 +72,11 @@ def test_array():
     with pytest.raises(TypeError):
         arrt.decode(Cursor(b'\x03\x00\x00\x00\x01\x02'))
 
+def test_deserialize_int_array():
+    arrt = ArrayT(BoolT, 2)
+    bools = arrt.decode(Cursor([2,0,0,0,1,0]))
+    assert bools == [True, False]
+
 def test_tuple():
     tuplet = TupleT(StrT, Uint8, BoolT)
     assert tuplet.encode(("abc", 1, False)) == b'\x03\x00\x00\x00\x61\x62\x63\x01\x00'
