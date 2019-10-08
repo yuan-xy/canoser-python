@@ -311,6 +311,12 @@ class TupleT:
         buffer.write(')')
 
 
+def my_import(name):
+    components = name.split('.')
+    mod = __import__(components[0])
+    for comp in components[1:]:
+        mod = getattr(mod, comp)
+    return mod
 
 def type_mapping(field_type):
     if field_type == str:
@@ -347,5 +353,7 @@ def type_mapping(field_type):
         for item in field_type:
             arr.append(type_mapping(item))
         return TupleT(*arr)
+    elif type(field_type) == str:
+        return my_import(field_type)
     else:
         return field_type
