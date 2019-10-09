@@ -12,6 +12,15 @@ def test_uint8():
     assert Uint8.max_value == 255
     assert Uint8.min_value == 0
 
+def test_uint8_illegal():
+    with pytest.raises(Exception):
+        Uint8.encode(-1)
+    with pytest.raises(Exception):
+        Uint8.encode(0.1)
+    with pytest.raises(Exception):
+        Uint8.encode([0])
+    with pytest.raises(Exception):
+        Uint8.encode(b'0')
 
 def test_int8():
     assert Int8.encode(16) == b"\x10"

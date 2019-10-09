@@ -54,6 +54,8 @@ class IntType:
             return 0
 
     def check_value(self, value):
+        if not isinstance(value, int):
+            raise TypeError(f"{value} is not instance of <int>.")
         min, max = self.min_value, self.max_value
         if value < min or value > max:
             raise TypeError('value {} not in range {}-{}'.format(value, min, max))

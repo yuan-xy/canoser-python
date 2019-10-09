@@ -62,6 +62,10 @@ class ArrayUint8(Struct):
     _fields = [('array', [Uint8])]
 
 def test_array():
+    with pytest.raises(Exception):
+        x = ArrayUint8([0.1])
+    with pytest.raises(TypeError):
+        x = ArrayUint8([-1])
     with pytest.raises(TypeError):
         x = ArrayUint8(b'')
     x = ArrayUint8([])
