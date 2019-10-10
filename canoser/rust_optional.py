@@ -52,10 +52,10 @@ class RustOptional(Base):
         return self.value == other.value
 
     @classmethod
-    def _pretty_print_obj(cls, obj, buffer, ident):
+    def pretty_print_obj(cls, obj, buffer, ident):
         if obj.value is None:
             buffer.write('None')
         else:
-            obj.value_type._pretty_print_obj(obj.value, buffer, ident)
+            obj.value_type.pretty_print_obj(obj.value, buffer, ident)
 
 

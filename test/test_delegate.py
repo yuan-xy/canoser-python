@@ -9,7 +9,7 @@ class Address(DelegateT):
     delegate_type = [Uint8, ADDRESS_LENGTH]
 
     @classmethod
-    def _pretty_print_obj(cls, obj, concat, ident):
+    def pretty_print_obj(cls, obj, concat, ident):
         hex = struct.pack("<{}B".format(len(obj)), *obj).hex()
         concat.write(f'"{hex}"')
 

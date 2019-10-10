@@ -98,7 +98,7 @@ class Struct(Base):
         return True
 
     @classmethod
-    def _pretty_print_obj(cls, obj, buffer, ident):
+    def pretty_print_obj(cls, obj, buffer, ident):
         #TODO obj should be instance of cls
         prefix_blank = '  '
         #buffer.write(prefix_blank*ident)
@@ -107,9 +107,13 @@ class Struct(Base):
         for name, atype in obj._fields:
             value = getattr(obj, name)
             buffer.write(prefix_blank*ident_inner)
-            buffer.write(f'{name}: ')
-            type_mapping(atype)._pretty_print_obj(value, buffer, ident_inner)
+            cls.pretty_print_field(name, type_mapping(atype), value, buffer, ident_inner)
             buffer.write(',\n')
         buffer.write(prefix_blank*ident)
         buffer.write('}')
+
+    @classmethod
+    def pretty_print_field(cls, name, atype, value, buffer, ident):
+        buffer.write(f'{name}: ')
+        atype.pretty_print_obj(value, buffer, ident)
 

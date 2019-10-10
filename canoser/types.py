@@ -19,7 +19,7 @@ class IntType:
             return f"Uint{self.bits}"
 
     @classmethod
-    def _pretty_print_obj(cls, value, buffer, ident):
+    def pretty_print_obj(cls, value, buffer, ident):
         buffer.write(f'{value}')
 
     def pack_str(self):
@@ -92,7 +92,7 @@ class StrT:
             raise TypeError('value {} is not string'.format(value))
 
     @classmethod
-    def _pretty_print_obj(cls, value, buffer, ident):
+    def pretty_print_obj(cls, value, buffer, ident):
         buffer.write(f'{value}')
 
 
@@ -122,7 +122,7 @@ class BytesT:
             raise TypeError('value {} is not bytes'.format(value))
 
     @classmethod
-    def _pretty_print_obj(cls, value, buffer, ident):
+    def pretty_print_obj(cls, value, buffer, ident):
         buffer.write(f'{value}')
 
 
@@ -154,7 +154,7 @@ class BoolT:
             raise TypeError('value {} is not bool'.format(value))
 
     @classmethod
-    def _pretty_print_obj(cls, value, buffer, ident):
+    def pretty_print_obj(cls, value, buffer, ident):
         buffer.write(f'{value}')
 
 
@@ -196,7 +196,7 @@ class ArrayT:
             return False
         return self.atype == other.atype
 
-    def _pretty_print_obj(cls, obj, buffer, ident):
+    def pretty_print_obj(cls, obj, buffer, ident):
         if cls.atype == Uint8:
             hex = struct.pack("<{}B".format(len(obj)), *obj).hex()
             buffer.write(hex)
@@ -206,7 +206,7 @@ class ArrayT:
             ident_inner = ident+1
             for _, item in enumerate(obj):
                 buffer.write(prefix_blank*ident_inner)
-                cls.atype._pretty_print_obj(item, buffer, ident_inner)
+                cls.atype.pretty_print_obj(item, buffer, ident_inner)
                 buffer.write(',\n')
             buffer.write(prefix_blank*ident)
             buffer.write(']')
@@ -249,14 +249,14 @@ class MapT:
             return False
         return self.ktype == other.ktype and self.vtype == other.vtype
 
-    def _pretty_print_obj(cls, obj, buffer, ident):
+    def pretty_print_obj(cls, obj, buffer, ident):
         prefix_blank = '  '
         buffer.write('{\n')
         ident_inner = ident+1
         for k,v in obj.items():
             buffer.write(prefix_blank*ident_inner)
             buffer.write(f'{k}: ')
-            cls.vtype._pretty_print_obj(v, buffer, ident_inner)
+            cls.vtype.pretty_print_obj(v, buffer, ident_inner)
             buffer.write(',\n')
         buffer.write(prefix_blank*ident)
         buffer.write('}')
@@ -298,7 +298,7 @@ class TupleT:
                 return False
         return True
 
-    def _pretty_print_obj(cls, obj, buffer, ident):
+    def pretty_print_obj(cls, obj, buffer, ident):
         prefix_blank = '  '
         buffer.write('(\n')
         ident_inner = ident+1
@@ -307,7 +307,7 @@ class TupleT:
             buffer.write(prefix_blank*ident_inner)
             if issubclass(k, Base):
                 buffer.write(f'{k.__name__} ')
-            k._pretty_print_obj(v, buffer, ident_inner)
+            k.pretty_print_obj(v, buffer, ident_inner)
             buffer.write(',\n')
         buffer.write(prefix_blank*ident)
         buffer.write(')')

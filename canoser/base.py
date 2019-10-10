@@ -17,5 +17,5 @@ class Base:
 
     def __str__(self):
         concat = StringIO()
-        self.__class__._pretty_print_obj(self, concat, 0)
+        self.__class__.pretty_print_obj(self, concat, 0)
         return concat.getvalue()

@@ -21,6 +21,6 @@ class DelegateT:
         cls.dtype().check_value(value)
 
     @classmethod
-    def _pretty_print_obj(cls, obj, buffer, ident):
-        cls.dtype()._pretty_print_obj(obj, buffer, ident)
+    def pretty_print_obj(cls, obj, buffer, ident):
+        cls.dtype().pretty_print_obj(obj, buffer, ident)
 
