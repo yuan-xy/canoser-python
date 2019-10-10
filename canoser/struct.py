@@ -113,7 +113,7 @@ class Struct(Base):
         buffer.write('}')
 
     @classmethod
-    def pretty_print_field(cls, name, atype, value, buffer, ident):
-        buffer.write(f'{name}: ')
-        atype.pretty_print_obj(value, buffer, ident)
+    def pretty_print_field(cls, field_name, field_type, field_value, buffer, ident):
+        buffer.write(f'{field_name}: ')
+        field_type.pretty_print_obj(field_value, buffer, ident)
 
