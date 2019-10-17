@@ -3,7 +3,7 @@ import pdb
 from canoser import *
 from datetime import datetime
 import struct
-
+import json
 
 # Test Example in https://github.com/libra/libra/tree/master/common/canonical_serialization/README.md
 
@@ -153,5 +153,38 @@ def test_readme_example5():
   max_gas_amount: 0,
   gas_unit_price: 0,
   expiration_time: 18446744073709551615,
+}"""
+    amap = tx.to_json_serializable()
+    assert tx.to_json() == json.dumps(amap, sort_keys=False, indent=4)
+    assert tx.to_json() == """{
+    "sender": "c3398a599a6f3b9f30b635af29f2ba046d3a752c26e9d0647b9647d1f4c04ad4",
+    "sequence_number": 32,
+    "payload": {
+        "WriteSet": {
+            "write_set": [
+                [
+                    {
+                        "address": "a71d76faa2d2d5c3224ec3d41deb293973564a791e55c6782ba76c2bf0495f9a",
+                        "path": "01217da6c6b3e19f1825cfb2676daecce3bf3de03cf26647c78df00b371b25cc97"
+                    },
+                    {
+                        "Deletion": null
+                    }
+                ],
+                [
+                    {
+                        "address": "c4c63f80c74b11263e421ebf8486a4e398d0dbc09fa7d4f62ccdb309f3aea81f",
+                        "path": "01217da6c6b3e19f18"
+                    },
+                    {
+                        "Value": "cafed00d"
+                    }
+                ]
+            ]
+        }
+    },
+    "max_gas_amount": 0,
+    "gas_unit_price": 0,
+    "expiration_time": 18446744073709551615
 }"""
 

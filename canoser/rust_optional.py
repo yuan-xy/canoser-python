@@ -58,4 +58,7 @@ class RustOptional(Base):
         else:
             obj.value_type.pretty_print_obj(obj.value, buffer, ident)
 
-
+    def to_json_serializable(self):
+        if self.value is None:
+            return None
+        return Base.to_json_data(value_type=(self.value, self.value_type))

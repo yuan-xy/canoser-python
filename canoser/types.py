@@ -125,6 +125,11 @@ class BytesT:
     def pretty_print_obj(cls, value, buffer, ident):
         buffer.write(f'{value}')
 
+    @classmethod
+    def to_json_serializable(cls, obj):
+        return obj.hex()
+
+
 
 class BoolT:
     @classmethod
@@ -211,6 +216,15 @@ class ArrayT:
             buffer.write(prefix_blank*ident)
             buffer.write(']')
 
+    def to_json_serializable(cls, obj):
+        if cls.atype == Uint8:
+            return struct.pack("<{}B".format(len(obj)), *obj).hex()
+        ret = []
+        for _, item in enumerate(obj):
+            data = Base.to_json_data(value_type=(item, cls.atype))
+            ret.append(data)
+        return ret
+
 class MapT:
 
     def __init__(self, ktype, vtype):
@@ -261,6 +275,13 @@ class MapT:
         buffer.write(prefix_blank*ident)
         buffer.write('}')
 
+    def to_json_serializable(cls, obj):
+        amap = {}
+        for k,v in obj.items():
+            kk = Base.to_json_data(value_type=(k, cls.ktype))
+            vv = Base.to_json_data(value_type=(v, cls.vtype))
+            amap[kk] = vv
+        return amap
 
 class TupleT:
 
@@ -311,6 +332,14 @@ class TupleT:
             buffer.write(',\n')
         buffer.write(prefix_blank*ident)
         buffer.write(')')
+
+    def to_json_serializable(cls, obj):
+        ret = []
+        zipped = zip(cls.ttypes, obj)
+        for k, v in zipped:
+            data = Base.to_json_data(value_type=(v, k))
+            ret.append(data)
+        return ret
 
 
 def my_import(name):

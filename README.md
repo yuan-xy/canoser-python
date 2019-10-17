@@ -253,10 +253,20 @@ After defining canoser.Struct, you don't need to implement serialization and des
 ```python
 # serialize an object
 obj = AccountResource(authentication_key=...,...)
-bbytes = obj.serialize
+bbytes = obj.serialize()
 
 # deserialize an object from bytes
 obj = AccountResource.deserialize(bbytes)
+```
+
+### Json pretty print
+
+For any canoser `Struct`, you can call the `to_json` method to get a formatted json string:
+
+```python
+# serialize an object
+print(obj.to_json())
+
 ```
 
 ### Get field value from object

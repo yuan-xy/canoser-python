@@ -69,7 +69,9 @@ All types should implment four methods, such as:
 
     def check_value(cls_or_obj, value)
 
-    def _pretty_print_obj(cls_or_obj, obj, concat, ident)
+    #def _pretty_print_obj(cls_or_obj, obj, concat, ident) #deprecated, recommend json print
+
+    def to_json_serializable(cls_or_obj, value)
 
 ```
 

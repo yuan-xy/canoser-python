@@ -33,10 +33,13 @@ class BoolS(Struct):
     _fields = [('boolean', bool)]
 
 def test_bool():
-	x = BoolS(True)
-	sx = x.serialize()
-	x2 = BoolS.deserialize(sx)
-	assert x.boolean == x2.boolean
+    x = BoolS(True)
+    sx = x.serialize()
+    x2 = BoolS.deserialize(sx)
+    assert x.boolean == x2.boolean
+    assert x.to_json() == """{
+    "boolean": true
+}"""
 
 class ArrayS(Struct):
     _fields = [('array', [bool])]
@@ -91,6 +94,12 @@ def test_map2():
     x2 = ChineseMap.deserialize(sx)
     assert x.kvs == x2.kvs
     assert x2.kvs["中文"] == "测试"
+    assert x2.to_json() == """{
+    "kvs": {
+        "\\u4e2d\\u6587": "\\u6d4b\\u8bd5"
+    }
+}"""
+
 
 
 class ByteS(Struct):
@@ -103,6 +112,14 @@ def test_bytes():
     assert x.kvs == x2.kvs
     with pytest.raises(TypeError):
         x2.kvs = {'a' : 'b'}
+    print(x2.to_json())
+    assert x2.to_json() == """{
+    "kvs": {
+        "636f756e7431": 123456789,
+        "636f756e7432": 987654321
+    }
+}"""
+
 
 class TupleS(Struct):
     _fields = [('tp', (str, Uint8, bool, Int16))]
