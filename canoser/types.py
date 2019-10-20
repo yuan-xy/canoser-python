@@ -53,6 +53,24 @@ class IntType:
         else:
             return 0
 
+    def int_unsafe(self, s):
+        ret = int(s)
+        self.check_value(ret)
+        return ret
+
+    def int_safe(self, s):
+        if not isinstance(s, str):
+            raise TypeError(f"{s} is not instance of <str>.")
+        if len(s) < 1:
+            raise TypeError(f"'{s}' is empty.")
+        len_min = len(str(self.min_value))
+        len_max = len(str(self.max_value))
+        if len(s) > max(len_min, len_max):
+            raise TypeError(f"Length of {s} is larger than max:{max(len_min, len_max)}.")
+        ret = int(s)
+        self.check_value(ret)
+        return ret
+
     def check_value(self, value):
         if not isinstance(value, int):
             raise TypeError(f"{value} is not instance of <int>.")
@@ -335,6 +353,8 @@ class TupleT:
 
     def to_json_serializable(cls, obj):
         ret = []
+        #https://stackoverflow.com/questions/15721363/preserve-python-tuples-with-json
+        #If need to deserialize tuple back later, above link will help.
         zipped = zip(cls.ttypes, obj)
         for k, v in zipped:
             data = Base.to_json_data(value_type=(v, k))

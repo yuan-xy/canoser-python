@@ -2,6 +2,45 @@ from canoser import *
 import pdb
 import pytest
 
+def test_str_to_int():
+    with pytest.raises(Exception):
+        Uint8.int_unsafe("")
+    assert 0 == Uint8.int_unsafe("0")
+    assert 0 == Uint8.int_unsafe(b"0")
+    assert 1 == Uint8.int_unsafe(b"01")
+    assert 0 == Uint8.int_unsafe("0"*100)
+    assert 255 == Uint8.int_unsafe("255")
+    assert 255 == Uint8.int_unsafe("0255")
+    with pytest.raises(Exception):
+        Uint8.int_unsafe("-1")
+    with pytest.raises(Exception):
+        Uint8.int_unsafe("256")
+
+def test_str_to_int_strict():
+    assert 0 == Uint8.int_safe("0")
+    assert 255 == Uint8.int_safe("255")
+    assert -128 == Int8.int_safe("-128")
+    assert 127 == Int8.int_safe("127")
+    assert 65535 == Uint16.int_safe("65535")
+    with pytest.raises(Exception):
+        Uint8.int_safe("")
+    with pytest.raises(Exception):
+        Uint8.int_safe(b"0")
+    with pytest.raises(Exception):
+        Uint8.int_safe(b"01")
+    with pytest.raises(Exception):
+        Uint8.int_safe("0"*100)
+    with pytest.raises(Exception):
+        Uint8.int_safe("0255")
+    with pytest.raises(Exception):
+        Uint8.int_safe("-1")
+    with pytest.raises(Exception):
+        Uint8.int_safe("256")
+    with pytest.raises(Exception):
+        Int8.int_safe("-129")
+    with pytest.raises(Exception):
+        Int8.int_safe("128")
+
 def test_int():
     assert Int8.encode(16) == Uint8.encode(16)
 
