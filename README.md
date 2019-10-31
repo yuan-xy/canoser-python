@@ -107,8 +107,13 @@ Arrays can also define lengths to represent fixed length data. For example, the 
   class Address(Struct):
       _fields = [(addr, [Uint8, 32])]
 ```
-~~When the fixed length data is serialized, the length information is not written to the output.~~
-It seems that libra cancelled the fixed-length array data type, the length of the array is always write to the output.
+When the fixed length data is serialized, you can skip the length information written to the output. For example, following code will generate 32 bytes without writing the length of the addr during serialization.
+
+```python
+  class Address(Struct):
+      _fields = [(addr, [Uint8, 32, False])]
+```
+
 
 ### About map type
 The default data type (if not defined) in the map is an array of Uint8 in Libra, both of key and value.
@@ -397,11 +402,13 @@ class WriteOp(RustEnum):
 
 ## Related Projects
 
-[Libra Core](https://github.com/libra/libra)
+[MoveOnLibra OpenAPI: make writing libra wallet & move program easier](https://www.MoveOnLibra.com)
 
 [A Ruby implementation of the LCS(Libra Canonical Serialization)](https://github.com/yuan-xy/canoser-ruby)
 
 [A Python implementation of client APIs and command-line tools for the Libra network](https://github.com/yuan-xy/libra-client)
+
+
 
 ## License
 

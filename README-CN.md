@@ -98,8 +98,11 @@ impl CanonicalSerialize for AccountResource {
   class Address(Struct):
       _fields = [(addr, [Uint8, 32])]
 ```
-~~定长数据在序列化的时候，不写入长度信息。~~
-似乎Libra取消了定长数组的类型，所有的数组，都带有长度前缀。
+定长数据在序列化的时候，可以添加一个标志位, 表明不写入长度信息。如下所示:
+
+```python
+  class Address(Struct):
+      _fields = [(addr, [Uint8, 32, False])]
 
 
 ### 关于Map类型

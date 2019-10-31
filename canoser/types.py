@@ -183,25 +183,31 @@ class BoolT:
 
 class ArrayT:
 
-    def __init__(self, atype, fixed_len=None):
+    def __init__(self, atype, fixed_len=None, encode_len=True):
         self.atype = atype
         if fixed_len is not None and fixed_len <= 0:
             raise TypeError("arr len must > 0".format(fixed_len))
+        if fixed_len is None and not encode_len:
+            raise TypeError("variable length sequences must encode len.")
         self.fixed_len = fixed_len
+        self.encode_len = encode_len
 
     def encode(self, arr):
         output = b""
-        output += Uint32.encode(len(arr))
+        if self.encode_len:
+            output += Uint32.encode(len(arr))
         for item in arr:
             output += self.atype.encode(item)
         return output
 
     def decode(self, cursor):
         arr = []
-        size = Uint32.decode(cursor)
-        if self.fixed_len is not None:
-            if size != self.fixed_len:
-                raise TypeError(f"{size} is not equal to predefined value: {self.fixed_len}")
+        if self.encode_len:
+            size = Uint32.decode(cursor)
+            if self.fixed_len is not None and size != self.fixed_len:
+                 raise TypeError(f"{size} is not equal to predefined value: {self.fixed_len}")
+        else:
+            size = self.fixed_len
         for _ in range(size):
             arr.append(self.atype.decode(cursor))
         return arr
@@ -386,6 +392,11 @@ def type_mapping(field_type):
             item = field_type[0]
             size = field_type[1]
             return ArrayT(type_mapping(item), size)
+        elif len(field_type) == 3:
+            item = field_type[0]
+            size = field_type[1]
+            encode_len = field_type[2]
+            return ArrayT(type_mapping(item), size, encode_len)
         else:
             raise TypeError("Array has one item type, no more.")
         raise AssertionError("unreacheable")
