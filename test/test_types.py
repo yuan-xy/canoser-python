@@ -53,6 +53,18 @@ def test_str_to_int_strict():
     with pytest.raises(Exception):
         Int8.int_safe(128)
 
+def test_bool_cast_int():
+    assert isinstance(True, bool) == True
+    assert isinstance(True, int) == True
+    assert True == 1
+    assert False == (True < 1)
+    with pytest.raises(Exception):
+        Int8.int_safe(True)
+    with pytest.raises(Exception):
+        Int8.int_safe(False)
+    with pytest.raises(Exception):
+        Int8.int_safe(None)
+
 def test_int():
     assert Int8.encode(16) == Uint8.encode(16)
 

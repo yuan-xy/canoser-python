@@ -59,6 +59,8 @@ class IntType:
         return ret
 
     def int_safe(self, s):
+        if isinstance(s, bool):
+            raise TypeError(f"{s} is not a integer")
         if isinstance(s, int):
             self.check_value(s)
             return s
