@@ -17,6 +17,10 @@ def test_str_to_int():
         Uint8.int_unsafe("256")
 
 def test_str_to_int_strict():
+    assert 0 == Uint8.int_safe(0)
+    assert 255 == Uint8.int_safe(255)
+    assert -128 == Int8.int_safe(-128)
+    assert 127 == Int8.int_safe(127)
     assert 0 == Uint8.int_safe("0")
     assert 255 == Uint8.int_safe("255")
     assert -128 == Int8.int_safe("-128")
@@ -40,6 +44,14 @@ def test_str_to_int_strict():
         Int8.int_safe("-129")
     with pytest.raises(Exception):
         Int8.int_safe("128")
+    with pytest.raises(Exception):
+        Uint8.int_safe(-1)
+    with pytest.raises(Exception):
+        Uint8.int_safe(256)
+    with pytest.raises(Exception):
+        Int8.int_safe(-129)
+    with pytest.raises(Exception):
+        Int8.int_safe(128)
 
 def test_int():
     assert Int8.encode(16) == Uint8.encode(16)

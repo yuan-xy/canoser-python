@@ -59,6 +59,9 @@ class IntType:
         return ret
 
     def int_safe(self, s):
+        if isinstance(s, int):
+            self.check_value(s)
+            return s
         if not isinstance(s, str):
             raise TypeError(f"{s} is not instance of <str>.")
         if len(s) < 1:
