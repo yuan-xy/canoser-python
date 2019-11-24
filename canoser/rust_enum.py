@@ -4,6 +4,7 @@ from canoser.types import *
 from canoser.struct import TypedProperty
 from io import StringIO
 
+#TODO: how to support discontinuous index in enum
 
 class RustEnum(Base):
     _enums = []

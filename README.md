@@ -222,6 +222,28 @@ obj = OptionUInt(8)
 assert obj.value == 8
 ```
 
+Here's a complete example:
+
+```python
+class OptionStr(RustOptional):
+    _type = str
+
+class OptionTest(Struct):
+    _fields = [
+        ('message', OptionStr)
+    ]
+
+    def __init__(self, msg=None):
+        if msg is not None:
+            self.message = OptionStr(msg)
+        else:
+            self.message = OptionStr(None)
+
+test = OptionTest('test_str')
+assert test.message.value == 'test_str'
+```
+
+
 The RustOptional type in canoser is similar to `typing.Optional` in python. Note that this is not the same concept as an optional argument, which is one that has a default.
 
 
