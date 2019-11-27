@@ -33,3 +33,13 @@ def test_enocde_len():
 def test_not_enocde_len():
     actual_output = Address2.encode(input)
     assert bytes(expected_output) == actual_output
+
+class AddrStruct(Struct):
+    _fields = [('map', {Address2: [str]})]
+
+def test_int_list_as_dict_key():
+    amap = {bytes(input): ['test']}
+    addrs = AddrStruct(amap)
+    ser = addrs.serialize()
+    addr2 = AddrStruct.deserialize(ser)
+    assert addrs.map == addr2.map

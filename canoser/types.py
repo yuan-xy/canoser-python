@@ -1,7 +1,6 @@
 import struct
 from canoser.base import Base
 
-
 class IntType:
     _pack_map = {8: "B", 16: "H", 32: "L", 64: "Q"}
 
@@ -277,14 +276,22 @@ class MapT:
         for _ in range(size):
             k = self.ktype.decode(cursor)
             v = self.vtype.decode(cursor)
-            kvs[k] = v
+            if isinstance(k, list) and isinstance(k[0], int):
+                #python doesn't support list as key in dict, so we change list to bytes
+                kvs[bytes(k)] = v
+            else:
+                kvs[k] = v
         return kvs
 
     def check_value(self, kvs):
         if not isinstance(kvs, dict):
             raise TypeError(f"{kvs} is not a dict.")
         for k, v in kvs.items():
-            self.ktype.check_value(k)
+            if isinstance(self.ktype, list) or \
+                (hasattr(self.ktype, 'delegate_type') and isinstance(self.ktype.delegate_type, list)):
+                BytesT.check_value(k)
+            else:
+                self.ktype.check_value(k)
             self.vtype.check_value(v)
 
     def __eq__(self, other):
