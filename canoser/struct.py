@@ -1,7 +1,6 @@
 from canoser.base import Base
 from canoser.cursor import Cursor
 from canoser.types import type_mapping
-from io import StringIO
 
 
 class TypedProperty:

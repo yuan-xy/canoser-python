@@ -1,5 +1,3 @@
-import struct
-
 
 class Cursor:
     def __init__(self, buffer, offset=0):

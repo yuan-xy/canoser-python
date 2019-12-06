@@ -2,7 +2,6 @@ from canoser.base import Base
 from canoser.cursor import Cursor
 from canoser.types import *
 from canoser.struct import TypedProperty
-from io import StringIO
 
 #TODO: how to support discontinuous index in enum
 
