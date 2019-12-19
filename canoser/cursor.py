@@ -5,11 +5,12 @@ class Cursor:
         if isinstance(buffer, list):
             self.buffer = bytes(buffer)
         self.offset = offset
+        self.buffer_len = len(self.buffer)
 
     def read_bytes(self, size):
-        end, total = self.offset + size, len(self.buffer)
-        if end > total:
-            raise IOError("{} exceed buffer size: {}".format(end, total))
+        end = self.offset + size
+        if end > self.buffer_len:
+            raise IOError("{} exceed buffer size: {}".format(end, self.buffer_len))
         ret = self.buffer[self.offset:end]
         self.offset = end
         return ret
