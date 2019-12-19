@@ -2,7 +2,6 @@ from canoser.base import Base
 from canoser.cursor import Cursor
 from canoser.types import type_mapping
 
-
 class TypedProperty:
     def __init__(self, name, expected_type):
         self.name = name
