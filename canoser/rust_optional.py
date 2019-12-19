@@ -1,6 +1,7 @@
 from canoser.base import Base
 from canoser.cursor import Cursor
-from canoser.types import *
+from canoser.types import type_mapping
+from canoser.bool_t import BoolT
 from canoser.struct import TypedProperty
 
 

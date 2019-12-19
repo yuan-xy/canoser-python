@@ -1,5 +1,4 @@
 import struct
-from canoser.base import Base
 
 class IntType:
     _pack_map = {8: "B", 16: "H", 32: "L", 64: "Q"}

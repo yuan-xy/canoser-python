@@ -1,6 +1,4 @@
-import struct
-from canoser.base import Base
-from canoser.int_type import Uint8, Uint16, Uint32, Uint64, Int8, Int16, Int32, Int64
+from canoser.int_type import Uint8
 from canoser.tuple_t import TupleT
 from canoser.map_t import MapT
 from canoser.str_t import StrT
@@ -17,6 +15,9 @@ def my_import(name):
     return mod
 
 def type_mapping(field_type):
+    """
+    Mapping python types to canoser types
+    """
     if field_type == str:
         return StrT
     elif field_type == bytes:
