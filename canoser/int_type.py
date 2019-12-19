@@ -15,6 +15,11 @@ class IntType:
         return struct.unpack(cls.pack_str, bytes)[0]
 
     @classmethod
+    def decode_bytes2(cls, bytes):
+        #this is slower
+        return int.from_bytes(bytes, byteorder='little', signed=False)
+
+    @classmethod
     def decode(cls, cursor):
         bytes = cursor.read_bytes(cls.byte_lens)
         #return cls.decode_bytes(bytes) #inline decode_bytes
