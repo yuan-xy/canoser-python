@@ -77,10 +77,7 @@ All types should implment four methods, such as:
 
 `cls_or_obj` is either a canoser type class or a canoser type object. So those four methods can be classmethod or object method.
 
-For example, `Int8` and `ArrayT(BoolT)` is type object, `BoolT` and `RustEnum` is type class. The definition of `Int8` is:
-```
-Int8 = IntType(8, True)
-```
+For example, `ArrayT(BoolT)` is type object, `BoolT` and `RustEnum` is type class.
 
 
 ## Type check
