@@ -122,6 +122,31 @@ def test_uint64():
     assert Uint64.encode(0x1234567811223344) == b"\x44\x33\x22\x11\x78\x56\x34\x12"
     assert Uint64.decode_bytes(b"\x44\x33\x22\x11\x78\x56\x34\x12" ) == 0x1234567811223344
 
+def test_uint128():
+    assert Uint128.encode(Uint128.max_value) == b"\xff" * 16
+    assert Uint128.decode_bytes(b"\xff" * 16) == Uint128.max_value
+    v1 = b"\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00"
+    assert Uint128.encode(Uint64.max_value+1) == v1
+    assert Uint128.decode_bytes(v1) == Uint64.max_value+1
+    v2 = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x80'
+    assert Uint128.encode(Int128.max_value+1) == v2
+    assert Uint128.decode_bytes(v2) == Int128.max_value+1
+
+def test_int128():
+    v0 = b"\xff" * 15 + b"\x7f"
+    assert Int128.encode(Int128.max_value) == v0
+    assert Int128.decode_bytes(v0) == Int128.max_value
+    v1 = b"\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00"
+    assert Int128.encode(Uint64.max_value+1) == v1
+    assert Int128.decode_bytes(v1) == Uint64.max_value+1
+    v2 = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x80'
+    assert Int128.encode(Int128.min_value) == v2
+    assert Int128.decode_bytes(v2) == Int128.min_value
+    assert Int128.encode(-1) == b"\xff" * 16
+    assert Int128.decode_bytes(b"\xff" * 16) == -1
+
+
+
 def test_bool():
     assert BoolT.encode(True) == b"\1"
     assert BoolT.encode(False) == b"\0"

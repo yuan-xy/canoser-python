@@ -10,4 +10,5 @@ from canoser.bytes_t import BytesT  # noqa: F401
 from canoser.bool_t import BoolT  # noqa: F401
 from canoser.array_t import ArrayT  # noqa: F401
 from canoser.int_type import Uint8, Uint16, Uint32, Uint64, Int8, Int16, Int32, Int64  # noqa: F401
+from canoser.int_type import Uint128, Int128  # noqa: F401
 from canoser.util import bytes_to_int_list, hex_to_int_list  # noqa: F401

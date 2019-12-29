@@ -133,3 +133,18 @@ def test_tuple_struct():
     assert x.tp == x2.tp
     with pytest.raises(TypeError):
         x.tp = ()
+
+
+
+class Uint128S(Struct):
+    _fields = [('u128', Uint128)]
+
+def test_uint128_struct():
+    x = Uint128S(u128 = Uint128.max_value)
+    assert Uint128S.u128.expected_type == Uint128
+    sx = x.serialize()
+    assert sx == b'\xff' * 16
+    x2 = Uint128S.deserialize(sx)
+    assert x.u128 == x2.u128
+
+
