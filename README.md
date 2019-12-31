@@ -65,7 +65,7 @@ impl CanonicalSerialize for AccountResource {
     }
 }
 ```
-In the rust language used by Libra, it is necessary to manually write code to serialize/deserialize the data structure, and the order of the fields in the data structure and the order of serialization are not necessarily the same.
+~~In the rust language used by Libra, it is necessary to manually write code to serialize/deserialize the data structure, and the order of the fields in the data structure and the order of serialization are not necessarily the same.~~
 
 In Canoser, after defining the data structure, you don't need to write code to implement serialization and deserialization. Note that the order of the data structures in Canoser is defined in the order in which they are serialized in Libra.
 
@@ -77,10 +77,12 @@ In Canoser, after defining the data structure, you don't need to write code to i
 | canoser.Uint16 |  | Unsigned 16-bit integer|
 | canoser.Uint32 |  | Unsigned 32-bit integer |
 | canoser.Uint64 |  | Unsigned 64-bit integer |
+| canoser.Uint128 |  | Unsigned 128-bit integer |
 | canoser.Int8 |  | Signed 8-bit integer |
 | canoser.Int16 |  | Signed 16-bit integer|
 | canoser.Int32 |  | Signed 32-bit integer |
 | canoser.Int64 |  | Signed 64-bit integer |
+| canoser.Int128 |  | Signed 128-bit integer |
 | bool |  | Boolean |
 | str |  | String |
 | bytes |  | Binary String |
@@ -304,7 +306,23 @@ obj.authentication_key
 ```
 
 
+## Rust Type Alias
+For simple type alias in rust, such as:
+```rust
+// in rust
+pub type Round = u64;
+```
+
+We can define the alias like this:
+
+```python
+# in python
+Round = Uint64
+```
+
+
 ## Rust Tuple Struct
+
 Struct like Address and ByteArray has no fields:
 
 ```rust
@@ -334,7 +352,7 @@ class Address(DelegateT):
 class TransactionArgument(RustEnum):
     _enums = [
         ...
-        ('Address', AccountAddress),
+        ('Address', Address),
         ...
     ]
 ```

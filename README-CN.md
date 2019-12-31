@@ -57,7 +57,8 @@ impl CanonicalSerialize for AccountResource {
     }
 }
 ```
-在Libra使用的rust语言中，需要手动写代码实现数据结构的序列化/反序列化，而且数据结构中的字段顺序和序列化时的顺序不一定一致。
+~~在Libra使用的rust语言中，需要手动写代码实现数据结构的序列化/反序列化，而且数据结构中的字段顺序和序列化时的顺序不一定一致。~~
+
 在Canoser中，定义好数据结构后，不需要写序列化和反序列化的代码。注意，Canoser中的数据结构顺序要按照Libra中序列化的顺序来定义。
 
 ### 支持的数据类型
@@ -70,10 +71,12 @@ impl CanonicalSerialize for AccountResource {
 | canoser.Uint16 |  | 无符号16位整数 |
 | canoser.Uint32 |  | 无符号32位整数 |
 | canoser.Uint64 |  | 无符号64位整数 |
+| canoser.Uint128 |  | 无符号128位整数 |
 | canoser.Int8 |  | 有符号8位整数 |
 | canoser.Int16 |  | 有符号16位整数 |
 | canoser.Int32 |  | 有符号32位整数 |
 | canoser.Int64 |  | 有符号64位整数 |
+| canoser.Int128 |  | 有符号128位整数 |
 | bool |  | 布尔类型 |
 | str |  | 字符串 |
 | bytes |  | Binary String |
