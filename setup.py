@@ -10,7 +10,7 @@ setuptools.setup(
     name="canoser",
     version=version,
     author="yuan xinyu",
-    author_email="yuanxinyu.hangzhou@gmail.com",
+    author_email="yuan_xin_yu@hotmail.com",
     description="A python implementation of the LCS(Libra Canonical Serialization) for the Libra network.",
     long_description=long_description,
     long_description_content_type="text/markdown",
