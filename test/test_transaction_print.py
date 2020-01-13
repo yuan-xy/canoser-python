@@ -167,9 +167,7 @@ def test_readme_example5():
                         "address": "a71d76faa2d2d5c3224ec3d41deb293973564a791e55c6782ba76c2bf0495f9a",
                         "path": "01217da6c6b3e19f1825cfb2676daecce3bf3de03cf26647c78df00b371b25cc97"
                     },
-                    {
-                        "Deletion": null
-                    }
+                    "Deletion"
                 ],
                 [
                     {

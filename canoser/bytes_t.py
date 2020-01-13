@@ -1,7 +1,8 @@
 import struct
 from canoser.int_type import Uint32
+from canoser.base import Base
 
-class BytesT:
+class BytesT(Base):
     @classmethod
     def pack(self, *uint8s):
         output = b''

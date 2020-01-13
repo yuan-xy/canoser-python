@@ -3,7 +3,7 @@ from canoser.int_type import Uint32, Uint8
 import struct
 
 
-class ArrayT:
+class ArrayT(Base):
 
     def __init__(self, atype, fixed_len=None, encode_len=True):
         self.atype = atype
@@ -67,7 +67,7 @@ class ArrayT:
             return struct.pack("<{}B".format(len(obj)), *obj).hex()
         ret = []
         for _, item in enumerate(obj):
-            data = Base.to_json_data(value_type=(item, cls.atype))
+            data = cls.atype.to_json_serializable(item)
             ret.append(data)
         return ret
 

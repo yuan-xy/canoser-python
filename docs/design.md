@@ -4,11 +4,11 @@
 The basic principle of the syntax design is to use the python native syntax as many as possible. So, instead of define a type using canoser inner type class
 
 ```python
-    _fields = [('array', canoser.ArrayT(BoolT))]
+    _fields = [('an_array_of_boolean', canoser.ArrayT(canoser.BoolT))]
 ```
 we support plain python array object:
 ```python
-    _fields = [('array', [bool])]
+    _fields = [('an_array_of_boolean', [bool])]
 ```
 `type_mapping` function is responsible to convert python object to canoser inner type.
 
@@ -37,10 +37,12 @@ class Bar(Struct):
 | Uint16 | canoser.Uint16 | int |
 | Uint32 | canoser.Uint32 | int |
 | Uint64 | canoser.Uint64 | int |
+| Uint128 | canoser.Uint128 | int |
 | Int8 | canoser.Int8 | int |
 | Int16 | canoser.Int16 | int |
 | Int32 | canoser.Int32 | int |
 | Int64 | canoser.Int64 | int |
+| Int128 | canoser.Int128 | int |
 | bool | BoolT | bool |
 | str | StrT | str |
 | bytes | BytesT | bytes |

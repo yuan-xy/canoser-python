@@ -1,10 +1,15 @@
 import struct
+from canoser.base import Base
 
-class IntType:
+class IntType(Base):
 
     @classmethod
     def pretty_print_obj(cls, value, buffer, ident):
         buffer.write(f'{value}')
+
+    @classmethod
+    def to_json_serializable(cls, value):
+        return value
 
     @classmethod
     def encode(cls, value):
@@ -27,6 +32,9 @@ class IntType:
 
     @classmethod
     def int_safe(cls, s):
+        """
+        Only allow safe str and valid int to be coerced to destination IntType
+        """
         if isinstance(s, bool):
             raise TypeError(f"{s} is not a integer")
         if isinstance(s, int):

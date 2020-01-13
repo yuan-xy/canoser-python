@@ -27,7 +27,8 @@ class DelegateT:
 
     @classmethod
     def to_json_serializable(cls, value):
+        #TODO: bad smell
         #if hasattr(cls, "to_json_serializable"):
         if 'to_json_serializable' in cls.__dict__.keys():
             return cls.to_json_serializable(value)
-        return Base.to_json_data(value_type=(value, cls.dtype()))
+        return cls.dtype().to_json_serializable(value)

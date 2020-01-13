@@ -1,7 +1,7 @@
 from canoser.base import Base
 from canoser.int_type import Uint32
 
-class MapT:
+class MapT(Base):
 
     def __init__(self, ktype, vtype):
         self.ktype = ktype
@@ -63,8 +63,8 @@ class MapT:
     def to_json_serializable(cls, obj):
         amap = {}
         for k,v in obj.items():
-            kk = Base.to_json_data(value_type=(k, cls.ktype))
-            vv = Base.to_json_data(value_type=(v, cls.vtype))
+            kk = cls.ktype.to_json_serializable(k)
+            vv = cls.vtype.to_json_serializable(v)
             amap[kk] = vv
         return amap
 

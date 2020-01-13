@@ -119,7 +119,7 @@ class Struct(Base):
         for name, atype in self._fields:
             value = getattr(self, name)
             atype = type_mapping(atype)
-            amap[name] = Base.to_json_data(value_type=(value, atype))
+            amap[name] = atype.to_json_serializable(value)
         return amap
 
 

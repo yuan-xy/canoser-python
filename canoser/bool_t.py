@@ -1,6 +1,6 @@
+from canoser.base import Base
 
-
-class BoolT:
+class BoolT(Base):
     @classmethod
     def encode(self, value):
         if value:
@@ -30,3 +30,7 @@ class BoolT:
     @classmethod
     def pretty_print_obj(cls, value, buffer, ident):
         buffer.write(f'{value}')
+
+    @classmethod
+    def to_json_serializable(cls, value):
+        return value

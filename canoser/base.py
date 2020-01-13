@@ -3,6 +3,18 @@ from io import StringIO
 import json
 
 class Base:
+    """
+    All types should implment following four methods:
+
+    def encode(cls_or_obj, value)
+
+    def decode(cls_or_obj, cursor)
+
+    def check_value(cls_or_obj, value)
+
+    def to_json_serializable(cls_or_obj, value)
+    """
+
 
     def serialize(self):
         return self.__class__.encode(self)
@@ -24,14 +36,3 @@ class Base:
     def to_json(self, sort_keys=False, indent=4):
         amap = self.to_json_serializable()
         return json.dumps(amap, sort_keys=sort_keys, indent=indent)
-
-    @staticmethod
-    def to_json_data(base=None, value_type=None):
-        if base is not None:
-            return base.to_json_serializable()
-        value, atype = value_type
-        if hasattr(value, "to_json_serializable"):
-            return value.to_json_serializable()
-        if hasattr(atype, "to_json_serializable"):
-            return atype.to_json_serializable(value)
-        return value

@@ -1,6 +1,7 @@
 from canoser.int_type import Uint32
+from canoser.base import Base
 
-class StrT:
+class StrT(Base):
     @classmethod
     def encode(self, value):
         output = b''
@@ -22,3 +23,9 @@ class StrT:
     @classmethod
     def pretty_print_obj(cls, value, buffer, ident):
         buffer.write(f'{value}')
+
+    @classmethod
+    def to_json_serializable(cls, obj):
+        return obj
+
+

@@ -1,6 +1,6 @@
 from canoser.base import Base
 
-class TupleT:
+class TupleT(Base):
 
     def __init__(self, *ttypes):
         self.ttypes = ttypes
@@ -56,6 +56,6 @@ class TupleT:
         #If need to deserialize tuple back later, above link will help.
         zipped = zip(cls.ttypes, obj)
         for k, v in zipped:
-            data = Base.to_json_data(value_type=(v, k))
+            data = k.to_json_serializable(v)
             ret.append(data)
         return ret

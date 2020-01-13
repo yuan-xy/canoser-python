@@ -97,5 +97,7 @@ class RustEnum(Base):
             obj.value_type.pretty_print_obj(obj.value, buffer, ident)
 
     def to_json_serializable(self):
-        jj = Base.to_json_data(value_type=(self.value, self.value_type))
+        if self.value_type == None:
+            return self.enum_name
+        jj = self.value_type.to_json_serializable(self.value)
         return {self.enum_name : jj}
