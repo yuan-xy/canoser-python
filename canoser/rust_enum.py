@@ -89,13 +89,6 @@ class RustEnum(Base):
             return False
         return self.index == other.index and self.value == other.value
 
-    @classmethod
-    def pretty_print_obj(cls, obj, buffer, ident):
-        buffer.write(obj.enum_name)
-        if obj.value is not None:
-            buffer.write(": ")
-            obj.value_type.pretty_print_obj(obj.value, buffer, ident)
-
     def to_json_serializable(self):
         if self.value_type == None:
             return self.enum_name

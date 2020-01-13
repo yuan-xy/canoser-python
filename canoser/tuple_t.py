@@ -36,20 +36,6 @@ class TupleT(Base):
                 return False
         return True
 
-    def pretty_print_obj(cls, obj, buffer, ident):
-        prefix_blank = '  '
-        buffer.write('(\n')
-        ident_inner = ident+1
-        zipped = zip(cls.ttypes, obj)
-        for k, v in zipped:
-            buffer.write(prefix_blank*ident_inner)
-            if issubclass(k, Base):
-                buffer.write(f'{k.__name__} ')
-            k.pretty_print_obj(v, buffer, ident_inner)
-            buffer.write(',\n')
-        buffer.write(prefix_blank*ident)
-        buffer.write(')')
-
     def to_json_serializable(cls, obj):
         ret = []
         #https://stackoverflow.com/questions/15721363/preserve-python-tuples-with-json

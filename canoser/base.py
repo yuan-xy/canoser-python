@@ -29,9 +29,7 @@ class Base:
         return ret
 
     def __str__(self):
-        concat = StringIO()
-        self.__class__.pretty_print_obj(self, concat, 0)
-        return concat.getvalue()
+        return self.to_json(indent=2)
 
     def to_json(self, sort_keys=False, indent=4):
         amap = self.to_json_serializable()

@@ -4,10 +4,6 @@ from canoser.base import Base
 class IntType(Base):
 
     @classmethod
-    def pretty_print_obj(cls, value, buffer, ident):
-        buffer.write(f'{value}')
-
-    @classmethod
     def to_json_serializable(cls, value):
         return value
 

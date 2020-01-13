@@ -28,9 +28,5 @@ class BoolT(Base):
             raise TypeError('value {} is not bool'.format(value))
 
     @classmethod
-    def pretty_print_obj(cls, value, buffer, ident):
-        buffer.write(f'{value}')
-
-    @classmethod
     def to_json_serializable(cls, value):
         return value

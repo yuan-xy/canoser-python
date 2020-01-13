@@ -63,7 +63,7 @@ For those type that python language didn't has equivlent types, such as struct/e
 
 ## Type interface
 
-All types should implment four methods, such as:
+All types should implment following four methods:
 ```
     def encode(cls_or_obj, value)
 
@@ -71,13 +71,11 @@ All types should implment four methods, such as:
 
     def check_value(cls_or_obj, value)
 
-    #def _pretty_print_obj(cls_or_obj, obj, concat, ident) #deprecated, recommend json print
-
     def to_json_serializable(cls_or_obj, value)
 
 ```
 
-`cls_or_obj` is either a canoser type class or a canoser type object. So those four methods can be classmethod or object method.
+`cls_or_obj` is either a canoser type class or a canoser type object. So those four methods can either be classmethods or object methods.
 
 For example, `ArrayT(BoolT)` is type object, `BoolT` and `RustEnum` is type class.
 

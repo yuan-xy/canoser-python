@@ -52,13 +52,6 @@ class RustOptional(Base):
             return False
         return self.value == other.value
 
-    @classmethod
-    def pretty_print_obj(cls, obj, buffer, ident):
-        if obj.value is None:
-            buffer.write('None')
-        else:
-            obj.value_type.pretty_print_obj(obj.value, buffer, ident)
-
     def to_json_serializable(self):
         if self.value is None:
             return None

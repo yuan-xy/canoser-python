@@ -48,18 +48,6 @@ class MapT(Base):
             return False
         return self.ktype == other.ktype and self.vtype == other.vtype
 
-    def pretty_print_obj(cls, obj, buffer, ident):
-        prefix_blank = '  '
-        buffer.write('{\n')
-        ident_inner = ident+1
-        for k,v in obj.items():
-            buffer.write(prefix_blank*ident_inner)
-            buffer.write(f'{k}: ')
-            cls.vtype.pretty_print_obj(v, buffer, ident_inner)
-            buffer.write(',\n')
-        buffer.write(prefix_blank*ident)
-        buffer.write('}')
-
     def to_json_serializable(cls, obj):
         amap = {}
         for k,v in obj.items():

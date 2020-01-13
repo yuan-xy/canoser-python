@@ -28,10 +28,6 @@ class BytesT(Base):
             raise TypeError('value {} is not bytes'.format(value))
 
     @classmethod
-    def pretty_print_obj(cls, value, buffer, ident):
-        buffer.write(f'{value}')
-
-    @classmethod
     def to_json_serializable(cls, obj):
         return obj.hex()
 

@@ -47,21 +47,6 @@ class ArrayT(Base):
             return False
         return self.atype == other.atype
 
-    def pretty_print_obj(cls, obj, buffer, ident):
-        if cls.atype == Uint8:
-            hex = struct.pack("<{}B".format(len(obj)), *obj).hex()
-            buffer.write(hex)
-        else:
-            prefix_blank = '  '
-            buffer.write('[\n')
-            ident_inner = ident+1
-            for _, item in enumerate(obj):
-                buffer.write(prefix_blank*ident_inner)
-                cls.atype.pretty_print_obj(item, buffer, ident_inner)
-                buffer.write(',\n')
-            buffer.write(prefix_blank*ident)
-            buffer.write(']')
-
     def to_json_serializable(cls, obj):
         if cls.atype == Uint8:
             return struct.pack("<{}B".format(len(obj)), *obj).hex()

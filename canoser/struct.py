@@ -94,26 +94,6 @@ class Struct(Base):
                 return False
         return True
 
-    @classmethod
-    def pretty_print_obj(cls, obj, buffer, ident):
-        #TODO obj should be instance of cls
-        prefix_blank = '  '
-        #buffer.write(prefix_blank*ident)
-        buffer.write('{\n')
-        ident_inner = ident+1
-        for name, atype in obj._fields:
-            value = getattr(obj, name)
-            buffer.write(prefix_blank*ident_inner)
-            cls.pretty_print_field(name, type_mapping(atype), value, buffer, ident_inner)
-            buffer.write(',\n')
-        buffer.write(prefix_blank*ident)
-        buffer.write('}')
-
-    @classmethod
-    def pretty_print_field(cls, field_name, field_type, field_value, buffer, ident):
-        buffer.write(f'{field_name}: ')
-        field_type.pretty_print_obj(field_value, buffer, ident)
-
     def to_json_serializable(self):
         amap = {}
         for name, atype in self._fields:
