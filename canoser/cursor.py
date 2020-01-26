@@ -15,11 +15,16 @@ class Cursor:
         self.offset = end
         return ret
 
+    def read_to_end(self):
+        ret = self.buffer[self.offset:]
+        self.offset = self.buffer_len
+        return ret
+
     def peek_bytes(self, size):
-        end, total = self.offset + size, len(self.buffer)
-        if end > total:
+        end = self.offset + size
+        if end > self.buffer_len:
             raise IOError("{} exceed buffer size: {}".format(end, total))
         return self.buffer[self.offset:end]
 
     def is_finished(self):
-        return self.offset == len(self.buffer)
+        return self.offset == self.buffer_len
