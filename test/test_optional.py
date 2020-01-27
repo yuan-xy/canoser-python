@@ -32,6 +32,7 @@ class OStruct(Struct):
 
 def test_optional_struct():
     x = OStruct(opt = OptionInt(-1))
+    assert x.to_json_serializable() == {'opt': -1}
     assert OStruct.opt.expected_type == OptionInt
     sx = x.serialize()
     assert sx == b'\x01\xff'
@@ -42,6 +43,7 @@ def test_optional_struct():
 
 def test_optional_struct_null():
     x = OStruct(opt = OptionInt())
+    assert x.to_json_serializable() == {'opt': None}
     assert x.opt.value is None
     sx = x.serialize()
     assert sx == b'\x00'

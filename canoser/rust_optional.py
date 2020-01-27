@@ -55,4 +55,4 @@ class RustOptional(Base):
     def to_json_serializable(self):
         if self.value is None:
             return None
-        return Base.to_json_data(value_type=(self.value, self.value_type))
+        return self.value_type.to_json_serializable(self.value)
