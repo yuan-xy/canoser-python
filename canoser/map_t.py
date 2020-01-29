@@ -38,7 +38,7 @@ class MapT(Base):
             if isinstance(self.ktype, list) or \
                 (hasattr(self.ktype, 'delegate_type') and isinstance(self.ktype.delegate_type, list)):
                 from canoser.types import BytesT
-                BytesT.check_value(k)
+                BytesT().check_value(k)
             else:
                 self.ktype.check_value(k)
             self.vtype.check_value(v)

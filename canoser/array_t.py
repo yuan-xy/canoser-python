@@ -45,7 +45,7 @@ class ArrayT(Base):
     def __eq__(self, other):
         if not isinstance(other, ArrayT):
             return False
-        return self.atype == other.atype
+        return self.atype == other.atype and self.fixed_len == other.fixed_len
 
     def to_json_serializable(cls, obj):
         if cls.atype == Uint8:

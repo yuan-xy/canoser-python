@@ -47,9 +47,9 @@ def test_with_libra_case():
     assert Bar.c.expected_type == Addr
     assert Bar.d.expected_type == Uint32
     kvs = {}
-    kvs[BytesT.pack(0, 56, 21)] = [22, 10, 5]
-    kvs[BytesT.pack(1)] = [22, 21, 67]
-    kvs[BytesT.pack(20, 21, 89, 105)] = [201, 23, 90]
+    kvs[bytes([0, 56, 21])] = [22, 10, 5]
+    kvs[bytes([1])] = [22, 21, 67]
+    kvs[bytes([20, 21, 89, 105])] = [201, 23, 90]
     foo = Foo(
         a = Uint64.max_value,
         b = [100, 99, 88, 77, 66, 55],

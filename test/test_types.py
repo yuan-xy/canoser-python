@@ -155,9 +155,6 @@ def test_bool():
     with pytest.raises(TypeError):
     	BoolT.decode_bytes("\x02")
 
-def test_bytes():
-    assert BytesT.pack(1,2,3) == BytesT.pack(*[1,2,3])
-    assert BytesT.pack(1,2,3) == bytes([1,2,3])
 
 def test_array():
     arrt = ArrayT(Uint8, 2)

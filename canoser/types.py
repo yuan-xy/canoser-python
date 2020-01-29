@@ -21,7 +21,7 @@ def type_mapping(field_type):
     if field_type == str:
         return StrT
     elif field_type == bytes:
-        return BytesT
+        return BytesT()
     elif field_type == bool:
         return BoolT
     elif type(field_type) == list:
@@ -44,7 +44,7 @@ def type_mapping(field_type):
         raise AssertionError("unreacheable")
     elif type(field_type) == dict:
         if len(field_type) == 0:
-            ktype = BytesT
+            ktype = BytesT()
             vtype = [Uint8]
         elif len(field_type) == 1:
             ktype = next(iter(field_type.keys()))
