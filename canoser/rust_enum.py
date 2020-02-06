@@ -42,7 +42,10 @@ class RustEnum(Base):
         self._init_with_index_value(index, value, datatype)
 
     def __getattr__(self, name):
-        return self._index == self.__class__.get_index(name)
+        try:
+            return self._index == self.__class__.get_index(name)
+        except TypeError:
+            return super().__getattr__(self, name)
 
     def __setattr__(self, name, value):
         if name == "value":

@@ -28,6 +28,11 @@ def test_invalid():
 
 def test_enum():
     t_arg = TransactionArgument('U64', 2)
+    assert hasattr(t_arg, 'value')
+    assert hasattr(t_arg, 'U64')
+    assert hasattr(t_arg, 'Address')
+    assert hasattr(t_arg, '__str__')
+    assert hasattr(t_arg, 'to_proto') == False
     assert t_arg.index == 0
     assert t_arg.value == 2
     assert t_arg.U64 == True
