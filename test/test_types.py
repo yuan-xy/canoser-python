@@ -1,4 +1,5 @@
 from canoser import *
+from canoser.types import type_mapping
 import pdb
 import pytest
 
@@ -177,3 +178,7 @@ def test_tuple():
     ret = tuplet.decode(Cursor(b'\x03\x00\x00\x00\x61\x62\x63\x01\x00'))
     assert ret == ("abc", 1, False)
 
+def test_type_mapping():
+    atype = {Uint16: Uint64}
+    mtype = type_mapping(atype)
+    print(mtype)

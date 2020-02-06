@@ -32,6 +32,7 @@ def test_enocde_len():
 
 def test_not_enocde_len():
     actual_output = Address2.encode(input)
+    assert bytes(input) == actual_output
     assert bytes(expected_output) == actual_output
 
 class AddrStruct(Struct):
