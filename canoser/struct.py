@@ -1,6 +1,8 @@
 from canoser.base import Base
 from canoser.cursor import Cursor
 from canoser.types import type_mapping
+import json
+
 
 class TypedProperty:
     def __init__(self, name, expected_type):
@@ -98,8 +100,20 @@ class Struct(Base):
         amap = {}
         for name, atype in self._fields:
             value = getattr(self, name)
-            atype = type_mapping(atype)
-            amap[name] = atype.to_json_serializable(value)
+            if isinstance(value, TypedProperty):
+                amap[name] = None
+            else:
+                atype = type_mapping(atype)
+                amap[name] = atype.to_json_serializable(value)
         return amap
 
+    def __str__(self):
+        return self.to_json(indent=2)
+
+    def __repr__(self):
+        return self.__class__.__qualname__ + self.to_json(indent=2)
+
+    def to_json(self, sort_keys=False, indent=4):
+        amap = self.to_json_serializable()
+        return json.dumps(amap, sort_keys=sort_keys, indent=indent)
 

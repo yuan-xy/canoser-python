@@ -12,7 +12,8 @@ class Base:
 
     def check_value(cls_or_obj, value)
 
-    def to_json_serializable(cls_or_obj, value)
+    def to_json_serializable(obj)
+    def to_json_serializable(acls, value)
     """
 
 
@@ -28,9 +29,3 @@ class Base:
                 len(buffer), cursor.offset))
         return ret
 
-    def __str__(self):
-        return self.to_json(indent=2)
-
-    def to_json(self, sort_keys=False, indent=4):
-        amap = self.to_json_serializable()
-        return json.dumps(amap, sort_keys=sort_keys, indent=indent)

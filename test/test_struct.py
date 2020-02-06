@@ -85,6 +85,16 @@ def test_map():
     x2 = MapS.deserialize(sx)
     assert x.kvs == x2.kvs
 
+class MapS2(Struct):
+    _fields = [('counters', {Uint16 : Uint64})]
+
+
+def test_map_empty():
+    x = MapS2({})
+    sx = x.serialize()
+    x2 = MapS2.deserialize(sx)
+    assert x.counters == x2.counters
+
 class ChineseMap(Struct):
     _fields = [('kvs', {str : str})]
 
@@ -147,4 +157,7 @@ def test_uint128_struct():
     x2 = Uint128S.deserialize(sx)
     assert x.u128 == x2.u128
 
-
+def test_print_null_field():
+    x = Uint128S()
+    print(x)
+    print(x.__repr__())
