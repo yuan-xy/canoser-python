@@ -3,10 +3,11 @@ import pytest
 import pdb
 
 def test_read():
-    data = [1,2,3,4,5]
+    data = [6,2,3,4,5]
     cursor = Cursor(data)
-    assert cursor.read_bytes(1) == b'\x01'
+    assert cursor.read_u8() == 6
     assert cursor.offset == 1
+    assert cursor.position() == cursor.offset
     assert cursor.peek_bytes(3) == b'\x02\x03\x04'
     assert cursor.offset == 1
     assert cursor.read_bytes(2) == b'\x02\x03'

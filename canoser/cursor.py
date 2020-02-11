@@ -28,3 +28,10 @@ class Cursor:
 
     def is_finished(self):
         return self.offset == self.buffer_len
+
+    def position(self):
+        return self.offset
+
+    def read_u8(self):
+        arr = self.read_bytes(1)
+        return int(arr[0])
