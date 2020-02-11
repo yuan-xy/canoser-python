@@ -15,3 +15,20 @@ def test_read():
     assert cursor.is_finished() == False
     assert cursor.read_to_end() == b'\x04\x05'
     assert cursor.is_finished() == True
+
+def test_bytearray():
+    array = bytearray()
+    array.append(5)
+    array.append(2)
+    array.extend([3, 4])
+    cursor = Cursor(array)
+    assert cursor.read_u8() == 5
+    assert cursor.offset == 1
+    assert cursor.position() == cursor.offset
+    assert cursor.peek_bytes(3) == b'\x02\x03\x04'
+    assert cursor.offset == 1
+    assert cursor.read_bytes(2) == b'\x02\x03'
+    assert cursor.offset == 3
+    assert cursor.is_finished() == False
+    assert cursor.read_to_end() == b'\x04'
+    assert cursor.is_finished() == True

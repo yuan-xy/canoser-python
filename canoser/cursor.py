@@ -4,6 +4,8 @@ class Cursor:
         self.buffer = buffer
         if isinstance(buffer, list):
             self.buffer = bytes(buffer)
+        if isinstance(buffer, bytearray):
+            self.buffer = bytes(buffer)
         self.offset = offset
         self.buffer_len = len(self.buffer)
 
