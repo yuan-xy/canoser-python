@@ -57,6 +57,19 @@ class IntType(Base):
         if value < min or value > max:
             raise TypeError('value {} not in range {}-{}'.format(value, min, max))
 
+    @classmethod
+    def checked_add(cls, v1, v2):
+        #rust style api
+        cls.check_value(v1)
+        cls.check_value(v2)
+        try:
+            ret = v1+v2
+            cls.check_value(ret)
+            return ret
+        except TypeError:
+            return None
+
+
 class Int8(IntType):
     pack_str = "<b"
     byte_lens = 1

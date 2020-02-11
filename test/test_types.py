@@ -3,6 +3,10 @@ from canoser.types import type_mapping
 import pdb
 import pytest
 
+def test_checked_add():
+    assert 255 == Uint8.checked_add(254, 1)
+    assert None == Uint8.checked_add(254, 2)
+
 def test_str_to_int():
     with pytest.raises(Exception):
         Uint8.int_unsafe("")
