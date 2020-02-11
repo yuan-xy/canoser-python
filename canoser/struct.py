@@ -63,11 +63,11 @@ class Struct(Base):
 
     @classmethod
     def encode(cls, obj):
-        output = b''
+        output = bytearray()
         for name, atype in obj._fields:
             value = getattr(obj, name)
-            output += type_mapping(atype).encode(value)
-        return output
+            output.extend(type_mapping(atype).encode(value))
+        return bytes(output)
 
     @classmethod
     def decode(cls, cursor):

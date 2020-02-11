@@ -15,12 +15,12 @@ class ArrayT(Base):
         self.encode_len = encode_len
 
     def encode(self, arr):
-        output = b""
+        output = bytearray()
         if self.encode_len:
-            output += Uint32.encode(len(arr))
+            output.extend(Uint32.encode(len(arr)))
         for item in arr:
-            output += self.atype.encode(item)
-        return output
+            output.extend(self.atype.encode(item))
+        return bytes(output)
 
     def decode(self, cursor):
         arr = []

@@ -8,15 +8,15 @@ class MapT(Base):
         self.vtype = vtype
 
     def encode(self, kvs):
-        output = b""
-        output += Uint32.encode(len(kvs))
+        output = bytearray()
+        output.extend(Uint32.encode(len(kvs)))
         odict = {}
         for k, v in kvs.items():
             odict[self.ktype.encode(k)] = self.vtype.encode(v)
         for name in sorted(odict.keys()):
-            output += name
-            output += odict[name]
-        return output
+            output.extend(name)
+            output.extend(odict[name])
+        return bytes(output)
 
     def decode(self, cursor):
         kvs = {}
