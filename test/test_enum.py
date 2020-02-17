@@ -69,9 +69,9 @@ class Enum1(RustEnum):
 
 
 def test_enum2():
-    e1 = Enum1.new(0, [5])
+    e1 = Enum1.new_with_index_value(0, [5])
     e2 = Enum1('opt2', None)
-    assert Enum1.new(1, None) == Enum1('opt2')
+    assert Enum1.new_with_index_value(1, None) == Enum1('opt2')
     assert Enum1.encode(e1) == b'\x00\x00\x00\x00\x01\x00\x00\x00\x05'
     assert Enum1.encode(e2) == b'\x01\x00\x00\x00'
     obj = Enum1.decode(Cursor(b'\x00\x00\x00\x00\x01\x00\x00\x00\x05'))

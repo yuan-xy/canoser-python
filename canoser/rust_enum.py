@@ -17,7 +17,7 @@ class RustEnum(Base):
         raise TypeError(f"name:{name} not in enum {cls}")
 
     @classmethod
-    def new(cls, index, value):
+    def new_with_index_value(cls, index, value):
         if not cls._enums:
             raise TypeError(f'{cls} has no _enums defined.')
         if index < 0 or index >= len(cls._enums):
@@ -78,9 +78,9 @@ class RustEnum(Base):
         _name, datatype = cls._enums[index]
         if datatype is not None:
             value = type_mapping(datatype).decode(cursor)
-            return cls.new(index, value)
+            return cls.new_with_index_value(index, value)
         else:
-            return cls.new(index, None)
+            return cls.new_with_index_value(index, None)
 
     @classmethod
     def check_value(cls, value):

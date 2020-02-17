@@ -16,7 +16,7 @@ class StrT(Base):
         return str(cursor.read_bytes(strlen), encoding='utf-8')
 
     @classmethod
-    def check_value(self, value):
+    def check_value(cls, value):
         if not isinstance(value, str):
             raise TypeError('value {} is not string'.format(value))
 
