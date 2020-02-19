@@ -1,5 +1,6 @@
 import pytest
 import pdb
+from copy import copy, deepcopy
 from canoser import *
 
 ADDRESS_LENGTH = 32
@@ -109,6 +110,7 @@ def test_enum_struct2():
     EStruct2.initailize_fields_type()
     assert EStruct2.enum.expected_type == MyEnum
     x = EStruct2(MyEnum('opt3', [['ab', 'c'], ['d'], []]))
+    deepcopy(x)
     sx = x.serialize()
     assert sx == b'\x01\x00\x00\x00\x03\x00\x00\x00' +\
         b'\x02\x00\x00\x00' + b'\x02\x00\x00\x00ab' + b'\x01\x00\x00\x00c' +\
@@ -117,3 +119,17 @@ def test_enum_struct2():
     assert x.enum.index == x2.enum.index
     assert x.enum.value == x2.enum.value
 
+class MyEnumWrap(MyEnum):
+    pass
+
+def test_enum_wrap():
+    x1 = MyEnumWrap('opt1')
+    x2 = MyEnumWrap('opt3', [['ab', 'c'], ['d'], []])
+    assert x2.value == [['ab', 'c'], ['d'], []]
+    assert x2.opt3 == True
+    assert x2.opt1 == False
+    x3 = copy(x2)
+    x2.value = [['abc']]
+    assert x2.opt3 == True
+    assert x2.value == [['abc']]
+    assert x3.value == [['ab', 'c'], ['d'], []]

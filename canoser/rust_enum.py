@@ -41,7 +41,12 @@ class RustEnum(Base):
             raise AssertionError(f"{name} != {_name}")
         self._init_with_index_value(index, value, datatype)
 
+    #__getattr__ only gets called for attributes that don't actually exist.
+    #If you set an attribute directly, referencing that attribute will retrieve it without calling __getattr__.
+    #If you need to catch every attribute regardless whether it exists or not, use __getattribute__ instead.
     def __getattr__(self, name):
+        if name == '_index':
+            return None
         try:
             return self._index == self.__class__.get_index(name)
         except TypeError:
