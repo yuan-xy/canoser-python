@@ -1,5 +1,7 @@
 import struct
 from canoser.base import Base
+from struct import pack, unpack
+from_bytes = int.from_bytes
 
 class IntType(Base):
 
@@ -9,11 +11,19 @@ class IntType(Base):
 
     @classmethod
     def encode(cls, value):
-        return struct.pack(cls.pack_str, value)
+        return pack(cls.pack_str, value)
+
+    @classmethod
+    def encode_slow(cls, value):
+        return value.to_bytes(cls.byte_lens, byteorder="little", signed=cls.signed)
+
+    @classmethod
+    def decode_bytes_slow(cls, bytes):
+        return unpack(cls.pack_str, bytes)[0]
 
     @classmethod
     def decode_bytes(cls, bytes):
-        return struct.unpack(cls.pack_str, bytes)[0]
+        return from_bytes(bytes, byteorder='little', signed=cls.signed)
 
     @classmethod
     def decode(cls, cursor):
@@ -75,24 +85,28 @@ class Int8(IntType):
     byte_lens = 1
     max_value = 127
     min_value = -128
+    signed = True
 
 class Int16(IntType):
     pack_str = "<h"
     byte_lens = 2
     max_value = 32767
     min_value = -32768
+    signed = True
 
 class Int32(IntType):
     pack_str = "<l"
     byte_lens = 4
     max_value = 2147483647
     min_value = -2147483648
+    signed = True
 
 class Int64(IntType):
     pack_str = "<q"
     byte_lens = 8
     max_value = 9223372036854775807
     min_value = -9223372036854775808
+    signed = True
 
 
 class Uint8(IntType):
@@ -100,38 +114,39 @@ class Uint8(IntType):
     byte_lens = 1
     max_value = 255
     min_value = 0
+    signed = False
 
 class Uint16(IntType):
     pack_str = "<H"
     byte_lens = 2
     max_value = 65535
     min_value = 0
+    signed = False
 
 class Uint32(IntType):
     pack_str = "<L"
     byte_lens = 4
     max_value = 4294967295
     min_value = 0
+    signed = False
 
 class Uint64(IntType):
     pack_str = "<Q"
     byte_lens = 8
     max_value = 18446744073709551615
     min_value = 0
+    signed = False
 
 
 class Int128(IntType):
     byte_lens = 16
     max_value = 170141183460469231731687303715884105727
     min_value = -170141183460469231731687303715884105728
+    signed = True
 
     @classmethod
     def encode(cls, value):
         return value.to_bytes(16, byteorder="little", signed=True)
-
-    @classmethod
-    def decode_bytes(cls, bytes):
-        return int.from_bytes(bytes, byteorder='little', signed=True)
 
 
 
@@ -139,13 +154,9 @@ class Uint128(IntType):
     byte_lens = 16
     max_value = 340282366920938463463374607431768211455
     min_value = 0
+    signed = False
 
     @classmethod
     def encode(cls, value):
         return value.to_bytes(16, byteorder="little", signed=False)
-
-    @classmethod
-    def decode_bytes(cls, bytes):
-        return int.from_bytes(bytes, byteorder='little', signed=False)
-
 
