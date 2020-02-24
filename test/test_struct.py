@@ -13,6 +13,8 @@ def test_struct_init():
     assert s1.shares == 50
     s2 = Stock('ACME', shares=50)
     s3 = Stock(name='ACME', shares=50)
+    s33 = Stock(shares=50, name='ACME')
+    assert s3 == s33
     s6 = Stock(shares=50)
     with pytest.raises(TypeError):
         s4 = Stock('ACME', 500)
