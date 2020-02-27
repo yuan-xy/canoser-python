@@ -3,6 +3,7 @@ from canoser.cursor import Cursor
 from canoser.types import type_mapping
 from canoser.int_type import Uint32
 from canoser.struct import TypedProperty
+import json
 
 #TODO: how to support discontinuous index in enum
 
@@ -102,3 +103,14 @@ class RustEnum(Base):
             return self.enum_name
         jj = self.value_type.to_json_serializable(self.value)
         return {self.enum_name : jj}
+
+    def __str__(self):
+        return self.to_json(indent=2)
+
+    def __repr__(self):
+        return self.__class__.__qualname__ + self.to_json(indent=2)
+
+    def to_json(self, sort_keys=False, indent=4):
+        amap = self.to_json_serializable()
+        return json.dumps(amap, sort_keys=sort_keys, indent=indent)
+

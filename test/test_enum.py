@@ -133,3 +133,10 @@ def test_enum_wrap():
     assert x2.opt3 == True
     assert x2.value == [['abc']]
     assert x3.value == [['ab', 'c'], ['d'], []]
+    assert x2.__repr__() == """MyEnumWrap{
+  "opt3": [
+    [
+      "abc"
+    ]
+  ]
+}"""
