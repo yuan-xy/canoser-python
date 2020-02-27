@@ -61,6 +61,8 @@ class IntType(Base):
 
     @classmethod
     def check_value(cls, value):
+        if isinstance(value, bool):
+            raise TypeError(f"{s} is not a integer")
         if not isinstance(value, int):
             raise TypeError(f"{value} is not instance of <int>.")
         min, max = cls.min_value, cls.max_value

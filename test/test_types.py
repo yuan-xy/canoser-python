@@ -20,6 +20,9 @@ def test_str_to_int():
         Uint8.int_unsafe("-1")
     with pytest.raises(Exception):
         Uint8.int_unsafe("256")
+    with pytest.raises(Exception):
+        Uint8.check_value(True)
+
 
 def test_str_to_int_strict():
     assert 0 == Uint8.int_safe(0)
