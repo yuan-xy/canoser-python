@@ -2,7 +2,7 @@ from canoser.types import type_mapping
 from canoser.base import Base
 
 
-class DelegateT:
+class DelegateT(Base):
     delegate_type = 'delegate'
 
     @classmethod

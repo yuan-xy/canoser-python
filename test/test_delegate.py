@@ -29,3 +29,13 @@ def test_array():
     assert AddrStruct.addr.expected_type.dtype().atype == Uint8
     assert AddrStruct.addr.expected_type.dtype().fixed_len == ADDRESS_LENGTH
 
+
+class Bools(DelegateT):
+    delegate_type = [bool]
+
+def test_delegate():
+    x = [True, False, True]
+    bs = Bools.encode(x)
+    assert bs == b'\x03\x00\x00\x00\x01\x00\x01'
+    x2 = Bools.deserialize(bs)
+    assert x == x2
