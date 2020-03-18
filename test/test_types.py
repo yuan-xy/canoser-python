@@ -3,6 +3,11 @@ from canoser.types import type_mapping
 import pdb
 import pytest
 
+def test_random():
+    for _x in range(10000):
+        rand = Uint8.random()
+        assert rand >=0 and rand <256
+
 def test_checked_add():
     assert 255 == Uint8.checked_add(254, 1)
     assert None == Uint8.checked_add(254, 2)

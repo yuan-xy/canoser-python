@@ -1,4 +1,5 @@
 import struct
+from random import randint
 from canoser.base import Base
 from struct import pack, unpack
 from_bytes = int.from_bytes
@@ -81,6 +82,9 @@ class IntType(Base):
         except TypeError:
             return None
 
+    @classmethod
+    def random(cls):
+        return randint(cls.min_value, cls.max_value)
 
 class Int8(IntType):
     pack_str = "<b"
