@@ -13,7 +13,7 @@ def test_checked_add():
     assert None == Uint8.checked_add(254, 2)
 
 def test_str_to_int():
-    with pytest.raises(Exception):
+    with pytest.raises(ValueError):
         Uint8.int_unsafe("")
     assert 0 == Uint8.int_unsafe("0")
     assert 0 == Uint8.int_unsafe(b"0")
@@ -21,11 +21,11 @@ def test_str_to_int():
     assert 0 == Uint8.int_unsafe("0"*100)
     assert 255 == Uint8.int_unsafe("255")
     assert 255 == Uint8.int_unsafe("0255")
-    with pytest.raises(Exception):
+    with pytest.raises(TypeError):
         Uint8.int_unsafe("-1")
-    with pytest.raises(Exception):
+    with pytest.raises(TypeError):
         Uint8.int_unsafe("256")
-    with pytest.raises(Exception):
+    with pytest.raises(TypeError):
         Uint8.check_value(True)
 
 
