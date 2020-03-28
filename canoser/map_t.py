@@ -29,6 +29,7 @@ class MapT(Base):
                 kvs[bytes(k)] = v
             else:
                 kvs[k] = v
+        #TODO: check the key order of kvs, because lcs has order when serialize map.
         return kvs
 
     def check_value(self, kvs):

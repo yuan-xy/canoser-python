@@ -15,6 +15,8 @@ class ArrayT(Base):
         self.encode_len = encode_len
 
     def encode(self, arr):
+        if self.fixed_len is not None and len(arr) != self.fixed_len:
+             raise TypeError(f"{len(arr)} is not equal to predefined value: {self.fixed_len}")
         output = b""
         if self.encode_len:
             output += Uint32.encode(len(arr))
