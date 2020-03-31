@@ -4,8 +4,6 @@
 #
 #    pip-compile dev-requirements.in
 #
---index-url https://mirrors.aliyun.com/pypi/simple
---trusted-host mirrors.aliyun.com
 
 attrs==19.3.0             # via hypothesis, pytest
 bleach==3.1.4             # via readme-renderer
