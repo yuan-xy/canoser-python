@@ -1,10 +1,31 @@
 import setuptools
-from canoser.version import version
+import re
+
+with open("canoser/version.py", "r") as fp:
+    try:
+        version = re.findall(
+            r"^version = \"([0-9\.]+)\"", fp.read(), re.M
+        )[0]
+    except IndexError:
+        raise RuntimeError("Unable to determine version.")
+
+
 
 with open("README.md", "r") as fh:
     content = fh.read()
     arr = content.split("\n")
     long_description = "\n".join(arr[4:])
+
+
+tests_require = [
+    'pytest',
+    'hypothesis',
+]
+
+
+install_requires = [
+]
+
 
 setuptools.setup(
     name="canoser",
@@ -16,6 +37,8 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/yuan-xy/canoser-python.git",
     packages=setuptools.find_packages(),
+    install_requires=install_requires,
+    tests_require=tests_require,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
