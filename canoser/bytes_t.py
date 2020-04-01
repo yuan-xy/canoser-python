@@ -47,3 +47,29 @@ class BytesT(Base):
         return obj.hex()
 
 
+class ByteArrayT(Base):
+
+    def encode(self, value):
+        output = b""
+        output += Uint32.encode(len(value))
+        output += bytes(value)
+        return output
+
+
+    def decode(self, cursor):
+        size = Uint32.decode(cursor)
+        return bytearray(cursor.read_bytes(size))
+
+    def check_value(self, value):
+        if not isinstance(value, bytearray):
+            raise TypeError('value {} is not bytearray'.format(value))
+
+
+    def __eq__(self, other):
+        if not isinstance(other, ByteArrayT):
+            return False
+        return True
+
+    def to_json_serializable(cls, obj):
+        return obj.hex()
+

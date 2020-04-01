@@ -32,3 +32,13 @@ def test_address_as_dict_key():
     ser = addrs.serialize()
     addr2 = AddrStruct.deserialize(ser)
     assert addrs.map == addr2.map
+
+class BArrayStruct(Struct):
+    _fields = [('map', {Address2: bytearray})]
+
+def test_bytearray():
+    amap = {input: bytearray(b'ba')}
+    addrs = BArrayStruct(amap)
+    ser = addrs.serialize()
+    addr2 = BArrayStruct.deserialize(ser)
+    assert addrs.map == addr2.map

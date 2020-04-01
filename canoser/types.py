@@ -2,7 +2,7 @@ from canoser.int_type import Uint8
 from canoser.tuple_t import TupleT
 from canoser.map_t import MapT
 from canoser.str_t import StrT
-from canoser.bytes_t import BytesT
+from canoser.bytes_t import BytesT, ByteArrayT
 from canoser.bool_t import BoolT
 from canoser.array_t import ArrayT
 
@@ -22,6 +22,8 @@ def type_mapping(field_type):
         return StrT
     elif field_type == bytes:
         return BytesT()
+    elif field_type == bytearray:
+        return ByteArrayT()
     elif field_type == bool:
         return BoolT
     elif type(field_type) == list:
