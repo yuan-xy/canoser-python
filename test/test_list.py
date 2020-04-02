@@ -26,7 +26,7 @@ class Address2(DelegateT):
 
 
 def test_enocde_len():
-    expected_output0 = [32, 0, 0, 0] + expected_output
+    expected_output0 = [32] + expected_output
     actual_output = Address1.encode(input)
     assert bytes(expected_output0) == actual_output
 

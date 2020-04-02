@@ -39,7 +39,7 @@ def test_enum():
     assert t_arg.U64 == True
     assert t_arg.enum_name == 'U64'
     assert t_arg.value_type == Uint64
-    assert t_arg.serialize() == b"\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00"
+    assert t_arg.serialize() == b"\x00\x02\x00\x00\x00\x00\x00\x00\x00"
     assert t_arg == TransactionArgument.deserialize(t_arg.serialize())
     t_arg.value = 3
     assert t_arg.value == 3
@@ -73,12 +73,12 @@ def test_enum2():
     e1 = Enum1.new_with_index_value(0, [5])
     e2 = Enum1('opt2', None)
     assert Enum1.new_with_index_value(1, None) == Enum1('opt2')
-    assert Enum1.encode(e1) == b'\x00\x00\x00\x00\x01\x00\x00\x00\x05'
-    assert Enum1.encode(e2) == b'\x01\x00\x00\x00'
-    obj = Enum1.decode(Cursor(b'\x00\x00\x00\x00\x01\x00\x00\x00\x05'))
+    assert Enum1.encode(e1) == b'\x00\x01\x05'
+    assert Enum1.encode(e2) == b'\x01'
+    obj = Enum1.decode(Cursor(b'\x00\x01\x05'))
     assert obj.index == 0
     assert obj.value == [5]
-    obj = Enum1.decode(Cursor(b'\x01\x00\x00\x00'))
+    obj = Enum1.decode(Cursor(b'\x01'))
     assert obj.index == 1
     assert obj.value == None
 
@@ -94,7 +94,7 @@ def test_enum_struct():
     assert EStruct.enum.expected_type == Enum2
     x = EStruct(Enum2('opt1'))
     sx = x.serialize()
-    assert sx == b'\x00\x00\x00\x00'
+    assert sx == b'\x00'
     x2 = EStruct.deserialize(sx)
     assert x.enum.index == x2.enum.index
     assert x.enum.value == x2.enum.value
@@ -112,9 +112,9 @@ def test_enum_struct2():
     x = EStruct2(MyEnum('opt3', [['ab', 'c'], ['d'], []]))
     deepcopy(x)
     sx = x.serialize()
-    assert sx == b'\x01\x00\x00\x00\x03\x00\x00\x00' +\
-        b'\x02\x00\x00\x00' + b'\x02\x00\x00\x00ab' + b'\x01\x00\x00\x00c' +\
-        b'\x01\x00\x00\x00' + b'\x01\x00\x00\x00d' + b'\x00\x00\x00\x00'
+    assert sx == b'\x01\x03' +\
+        b'\x02' + b'\x02ab' + b'\x01c' +\
+        b'\x01' + b'\x01d' + b'\x00'
     x2 = EStruct2.deserialize(sx)
     assert x.enum.index == x2.enum.index
     assert x.enum.value == x2.enum.value

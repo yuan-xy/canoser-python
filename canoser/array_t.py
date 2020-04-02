@@ -19,7 +19,7 @@ class ArrayT(Base):
              raise TypeError(f"{len(arr)} is not equal to predefined value: {self.fixed_len}")
         output = b""
         if self.encode_len:
-            output += Uint32.encode(len(arr))
+            output += Uint32.serialize_uint32_as_uleb128(len(arr))
         for item in arr:
             output += self.atype.encode(item)
         return output
@@ -27,7 +27,7 @@ class ArrayT(Base):
     def decode(self, cursor):
         arr = []
         if self.encode_len:
-            size = Uint32.decode(cursor)
+            size = Uint32.parse_uint32_from_uleb128(cursor)
             if self.fixed_len is not None and size != self.fixed_len:
                  raise TypeError(f"{size} is not equal to predefined value: {self.fixed_len}")
         else:

@@ -13,7 +13,7 @@ def test_circular():
     t2 = Circular(2,[])
     t12 = Circular(12,[t1, t2])
     bstr = t12.serialize()
-    assert bstr == bytes([12]) + Uint32.encode(2) + t1.serialize() + t2.serialize()
+    assert bstr == bytes([12]) + Uint32.serialize_uint32_as_uleb128(2) + t1.serialize() + t2.serialize()
     tt = Circular.deserialize(bstr)
     assert tt == t12
     assert Circular.deserialize(t1.serialize()) == t1

@@ -1,3 +1,4 @@
+from __future__ import annotations
 import struct
 from random import randint
 from canoser.base import Base
@@ -135,6 +136,36 @@ class Uint32(IntType):
     max_value = 4294967295
     min_value = 0
     signed = False
+
+    @classmethod
+    def serialize_uint32_as_uleb128(cls, value: Uint32) -> bytes:
+        ret = bytearray()
+        while value >= 0x80:
+            # Write 7 (lowest) bits of data and set the 8th bit to 1.
+            byte = (value & 0x7f)
+            ret.append(byte | 0x80)
+            value >>= 7
+
+        # Write the remaining bits of data and set the highest bit to 0.
+        ret.append(value)
+        return bytes(ret)
+
+    @classmethod
+    def parse_uint32_from_uleb128(cls, cursor: Cursor) -> Uint32:
+        max_shift = 28
+        value = 0
+        shift = 0
+        while not cursor.is_finished():
+            byte = cursor.read_u8()
+            val = byte & 0x7f
+            value |= (val << shift)
+            if val == byte:
+                return value
+            shift += 7
+            if shift > max_shift:
+                break
+        bail(f"invalid ULEB128 representation for Uint32")
+
 
 class Uint64(IntType):
     pack_str = "<Q"

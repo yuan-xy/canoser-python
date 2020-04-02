@@ -36,6 +36,6 @@ class Bools(DelegateT):
 def test_delegate():
     x = [True, False, True]
     bs = Bools.encode(x)
-    assert bs == b'\x03\x00\x00\x00\x01\x00\x01'
+    assert bs == b'\x03\x01\x00\x01'
     x2 = Bools.deserialize(bs)
     assert x == x2

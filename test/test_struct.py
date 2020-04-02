@@ -49,13 +49,13 @@ class ArrayS(Struct):
 def test_array():
     x = ArrayS([True, False, True])
     sx = x.serialize()
-    assert b"\3\0\0\0\1\0\1" == sx
+    assert b"\3\1\0\1" == sx
     x2 = ArrayS.deserialize(sx)
     assert x.array == x2.array
 
 def test_array_error():
     with pytest.raises(TypeError):
-        ArrayS.deserialize(b"\3\0\0\0\1\0\2")
+        ArrayS.deserialize(b"\3\1\0\2")
     x = ArrayS([])
     with pytest.raises(TypeError):
         x.array = ["abc"]
@@ -140,7 +140,7 @@ def test_tuple_struct():
     x = TupleS(tp = ("abc", 1, False, 2))
     assert TupleS.tp.expected_type == TupleT(StrT, Uint8, BoolT, Int16)
     sx = x.serialize()
-    assert sx == b'\x03\x00\x00\x00\x61\x62\x63\x01\x00\x02\x00'
+    assert sx == b'\x03\x61\x62\x63\x01\x00\x02\x00'
     x2 = TupleS.deserialize(sx)
     assert x.tp == x2.tp
     with pytest.raises(TypeError):

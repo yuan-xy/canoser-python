@@ -9,7 +9,7 @@ class MapT(Base):
 
     def encode(self, kvs):
         output = b""
-        output += Uint32.encode(len(kvs))
+        output += Uint32.serialize_uint32_as_uleb128(len(kvs))
         odict = {}
         for k, v in kvs.items():
             odict[self.ktype.encode(k)] = self.vtype.encode(v)
@@ -20,7 +20,7 @@ class MapT(Base):
 
     def decode(self, cursor):
         kvs = {}
-        size = Uint32.decode(cursor)
+        size = Uint32.parse_uint32_from_uleb128(cursor)
         for _ in range(size):
             k = self.ktype.decode(cursor)
             v = self.vtype.decode(cursor)

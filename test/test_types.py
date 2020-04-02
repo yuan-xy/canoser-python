@@ -171,23 +171,23 @@ def test_bool():
 
 def test_array():
     arrt = ArrayT(Uint8, 2)
-    assert arrt.encode([1, 2]) == b'\x02\x00\x00\x00\x01\x02'
-    arr = arrt.decode(Cursor(b'\x02\x00\x00\x00\x01\x02'))
+    assert arrt.encode([1, 2]) == b'\x02\x01\x02'
+    arr = arrt.decode(Cursor(b'\x02\x01\x02'))
     assert arr == [1, 2]
     with pytest.raises(TypeError):
-        arrt.decode(Cursor(b'\x01\x00\x00\x00\x01\x02'))
+        arrt.decode(Cursor(b'\x01\x01\x02'))
     with pytest.raises(TypeError):
-        arrt.decode(Cursor(b'\x03\x00\x00\x00\x01\x02'))
+        arrt.decode(Cursor(b'\x03\x01\x02'))
 
 def test_deserialize_int_array():
     arrt = ArrayT(BoolT, 2)
-    bools = arrt.decode(Cursor([2,0,0,0,1,0]))
+    bools = arrt.decode(Cursor([2,1,0]))
     assert bools == [True, False]
 
 def test_tuple():
     tuplet = TupleT(StrT, Uint8, BoolT)
-    assert tuplet.encode(("abc", 1, False)) == b'\x03\x00\x00\x00\x61\x62\x63\x01\x00'
-    ret = tuplet.decode(Cursor(b'\x03\x00\x00\x00\x61\x62\x63\x01\x00'))
+    assert tuplet.encode(("abc", 1, False)) == b'\x03\x61\x62\x63\x01\x00'
+    ret = tuplet.decode(Cursor(b'\x03\x61\x62\x63\x01\x00'))
     assert ret == ("abc", 1, False)
 
 def test_type_mapping():

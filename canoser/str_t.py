@@ -6,13 +6,13 @@ class StrT(Base):
     def encode(self, value):
         output = b''
         utf8 = value.encode('utf-8')
-        output += Uint32.encode(len(utf8))
+        output += Uint32.serialize_uint32_as_uleb128(len(utf8))
         output += utf8
         return output
 
     @classmethod
     def decode(self, cursor):
-        strlen = Uint32.decode(cursor)
+        strlen = Uint32.parse_uint32_from_uleb128(cursor)
         return str(cursor.read_bytes(strlen), encoding='utf-8')
 
     @classmethod

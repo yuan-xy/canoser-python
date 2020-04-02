@@ -73,14 +73,14 @@ class RustEnum(Base):
 
     @classmethod
     def encode(cls, enum):
-        ret = Uint32.encode(enum.index)
+        ret = Uint32.serialize_uint32_as_uleb128(enum.index)
         if enum.value_type is not None:
             ret += enum.value_type.encode(enum.value)
         return ret
 
     @classmethod
     def decode(cls, cursor):
-        index = Uint32.decode(cursor)
+        index = Uint32.parse_uint32_from_uleb128(cursor)
         _name, datatype = cls._enums[index]
         if datatype is not None:
             value = type_mapping(datatype).decode(cursor)

@@ -16,14 +16,14 @@ class BytesT(Base):
     def encode(self, value):
         output = b""
         if self.encode_len:
-            output += Uint32.encode(len(value))
+            output += Uint32.serialize_uint32_as_uleb128(len(value))
         output += value
         return output
 
 
     def decode(self, cursor):
         if self.encode_len:
-            size = Uint32.decode(cursor)
+            size = Uint32.parse_uint32_from_uleb128(cursor)
             if self.fixed_len is not None and size != self.fixed_len:
                  raise TypeError(f"{size} is not equal to predefined value: {self.fixed_len}")
         else:
@@ -51,13 +51,13 @@ class ByteArrayT(Base):
 
     def encode(self, value):
         output = b""
-        output += Uint32.encode(len(value))
+        output += Uint32.serialize_uint32_as_uleb128(len(value))
         output += bytes(value)
         return output
 
 
     def decode(self, cursor):
-        size = Uint32.decode(cursor)
+        size = Uint32.parse_uint32_from_uleb128(cursor)
         return bytearray(cursor.read_bytes(size))
 
     def check_value(self, value):
