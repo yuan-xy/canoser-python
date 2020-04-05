@@ -1,4 +1,3 @@
-from __future__ import annotations
 import struct
 from random import randint
 from canoser.base import Base
@@ -138,7 +137,7 @@ class Uint32(IntType):
     signed = False
 
     @classmethod
-    def serialize_uint32_as_uleb128(cls, value: Uint32) -> bytes:
+    def serialize_uint32_as_uleb128(cls, value):
         ret = bytearray()
         while value >= 0x80:
             # Write 7 (lowest) bits of data and set the 8th bit to 1.
@@ -151,7 +150,7 @@ class Uint32(IntType):
         return bytes(ret)
 
     @classmethod
-    def parse_uint32_from_uleb128(cls, cursor: Cursor) -> Uint32:
+    def parse_uint32_from_uleb128(cls, cursor):
         max_shift = 28
         value = 0
         shift = 0
