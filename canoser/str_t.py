@@ -1,6 +1,7 @@
 from canoser.int_type import Uint32
 from canoser.base import Base
 
+
 class StrT(Base):
     @classmethod
     def encode(self, value):
@@ -23,5 +24,3 @@ class StrT(Base):
     @classmethod
     def to_json_serializable(cls, obj):
         return obj
-
-

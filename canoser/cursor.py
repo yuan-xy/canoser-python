@@ -25,7 +25,7 @@ class Cursor:
     def peek_bytes(self, size):
         end = self.offset + size
         if end > self.buffer_len:
-            raise IOError("{} exceed buffer size: {}".format(end, total))
+            raise IOError("{} exceed buffer size: {}".format(end, self.buffer_len))
         return self.buffer[self.offset:end]
 
     def is_finished(self):

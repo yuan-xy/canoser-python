@@ -16,7 +16,7 @@ class ArrayT(Base):
 
     def encode(self, arr):
         if self.fixed_len is not None and len(arr) != self.fixed_len:
-             raise TypeError(f"{len(arr)} is not equal to predefined value: {self.fixed_len}")
+            raise TypeError(f"{len(arr)} is not equal to predefined value: {self.fixed_len}")
         output = b""
         if self.encode_len:
             output += Uint32.serialize_uint32_as_uleb128(len(arr))
@@ -29,7 +29,7 @@ class ArrayT(Base):
         if self.encode_len:
             size = Uint32.parse_uint32_from_uleb128(cursor)
             if self.fixed_len is not None and size != self.fixed_len:
-                 raise TypeError(f"{size} is not equal to predefined value: {self.fixed_len}")
+                raise TypeError(f"{size} is not equal to predefined value: {self.fixed_len}")
         else:
             size = self.fixed_len
         for _ in range(size):
@@ -57,4 +57,3 @@ class ArrayT(Base):
             data = cls.atype.to_json_serializable(item)
             ret.append(data)
         return ret
-

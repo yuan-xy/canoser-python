@@ -1,8 +1,8 @@
-import struct
 from random import randint
 from canoser.base import Base
 from struct import pack, unpack
 from_bytes = int.from_bytes
+
 
 class IntType(Base):
 
@@ -59,7 +59,6 @@ class IntType(Base):
         cls.check_value(ret)
         return ret
 
-
     @classmethod
     def check_value(cls, value):
         if isinstance(value, bool):
@@ -72,11 +71,11 @@ class IntType(Base):
 
     @classmethod
     def checked_add(cls, v1, v2):
-        #rust style api
+        # rust style api
         cls.check_value(v1)
         cls.check_value(v2)
         try:
-            ret = v1+v2
+            ret = v1 + v2
             cls.check_value(ret)
             return ret
         except TypeError:
@@ -86,12 +85,14 @@ class IntType(Base):
     def random(cls):
         return randint(cls.min_value, cls.max_value)
 
+
 class Int8(IntType):
     pack_str = "<b"
     byte_lens = 1
     max_value = 127
     min_value = -128
     signed = True
+
 
 class Int16(IntType):
     pack_str = "<h"
@@ -100,12 +101,14 @@ class Int16(IntType):
     min_value = -32768
     signed = True
 
+
 class Int32(IntType):
     pack_str = "<l"
     byte_lens = 4
     max_value = 2147483647
     min_value = -2147483648
     signed = True
+
 
 class Int64(IntType):
     pack_str = "<q"
@@ -122,12 +125,14 @@ class Uint8(IntType):
     min_value = 0
     signed = False
 
+
 class Uint16(IntType):
     pack_str = "<H"
     byte_lens = 2
     max_value = 65535
     min_value = 0
     signed = False
+
 
 class Uint32(IntType):
     pack_str = "<L"
@@ -163,7 +168,7 @@ class Uint32(IntType):
             shift += 7
             if shift > max_shift:
                 break
-        bail(f"invalid ULEB128 representation for Uint32")
+        raise ValueError("invalid ULEB128 representation for Uint32")
 
 
 class Uint64(IntType):
@@ -185,7 +190,6 @@ class Int128(IntType):
         return value.to_bytes(16, byteorder="little", signed=True)
 
 
-
 class Uint128(IntType):
     byte_lens = 16
     max_value = 340282366920938463463374607431768211455
@@ -195,4 +199,3 @@ class Uint128(IntType):
     @classmethod
     def encode(cls, value):
         return value.to_bytes(16, byteorder="little", signed=False)
-

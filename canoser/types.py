@@ -14,7 +14,8 @@ def my_import(name):
         mod = getattr(mod, comp)
     return mod
 
-def type_mapping(field_type):
+
+def type_mapping(field_type):  # noqa: C901
     """
     Mapping python types to canoser types
     """

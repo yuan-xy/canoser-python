@@ -1,5 +1,6 @@
 from canoser.base import Base
 
+
 class BoolT(Base):
     @classmethod
     def encode(self, value):

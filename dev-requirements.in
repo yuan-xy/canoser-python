@@ -3,3 +3,4 @@ hypothesis
 twine
 setuptools
 wheel
+flake8

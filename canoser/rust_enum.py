@@ -1,11 +1,11 @@
 from canoser.base import Base
-from canoser.cursor import Cursor
 from canoser.types import type_mapping
 from canoser.int_type import Uint32
 from canoser.struct import TypedProperty
 import json
 
-#TODO: how to support discontinuous index in enum
+# TODO: how to support discontinuous index in enum
+
 
 class RustEnum(Base):
     _enums = []
@@ -42,9 +42,9 @@ class RustEnum(Base):
             raise AssertionError(f"{name} != {_name}")
         self._init_with_index_value(index, value, datatype)
 
-    #__getattr__ only gets called for attributes that don't actually exist.
-    #If you set an attribute directly, referencing that attribute will retrieve it without calling __getattr__.
-    #If you need to catch every attribute regardless whether it exists or not, use __getattribute__ instead.
+    # __getattr__ only gets called for attributes that don't actually exist.
+    # If you set an attribute directly, referencing that attribute will retrieve it without calling __getattr__.
+    # If you need to catch every attribute regardless whether it exists or not, use __getattribute__ instead.
     def __getattr__(self, name):
         if name == '_index':
             return None
@@ -99,10 +99,10 @@ class RustEnum(Base):
         return self.index == other.index and self.value == other.value
 
     def to_json_serializable(self):
-        if self.value_type == None:
+        if self.value_type is None:
             return self.enum_name
         jj = self.value_type.to_json_serializable(self.value)
-        return {self.enum_name : jj}
+        return {self.enum_name: jj}
 
     def __str__(self):
         return self.to_json(indent=2)
@@ -113,4 +113,3 @@ class RustEnum(Base):
     def to_json(self, sort_keys=False, indent=4):
         amap = self.to_json_serializable()
         return json.dumps(amap, sort_keys=sort_keys, indent=indent)
-

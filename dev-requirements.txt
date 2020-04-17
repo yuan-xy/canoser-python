@@ -4,6 +4,8 @@
 #
 #    pip-compile dev-requirements.in
 #
+--index-url https://mirrors.aliyun.com/pypi/simple
+--trusted-host mirrors.aliyun.com
 
 attrs==19.3.0             # via hypothesis, pytest
 bleach==3.1.4             # via readme-renderer
@@ -12,17 +14,22 @@ cffi==1.14.0              # via cryptography
 chardet==3.0.4            # via requests
 cryptography==2.8         # via secretstorage
 docutils==0.16            # via readme-renderer
+entrypoints==0.3          # via flake8
+flake8==3.7.9             # via -r dev-requirements.in
 hypothesis==5.8.0         # via -r dev-requirements.in
 idna==2.9                 # via requests
 importlib-metadata==1.6.0  # via keyring, pluggy, pytest, twine
 jeepney==0.4.3            # via keyring, secretstorage
 keyring==21.2.0           # via twine
+mccabe==0.6.1             # via flake8
 more-itertools==8.2.0     # via pytest
 packaging==20.3           # via pytest
 pkginfo==1.5.0.1          # via twine
 pluggy==0.13.1            # via pytest
 py==1.8.1                 # via pytest
+pycodestyle==2.5.0        # via flake8
 pycparser==2.20           # via cffi
+pyflakes==2.1.1           # via flake8
 pygments==2.6.1           # via readme-renderer
 pyparsing==2.4.6          # via packaging
 pytest==5.4.1             # via -r dev-requirements.in

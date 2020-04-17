@@ -1,8 +1,7 @@
 from canoser.base import Base
-from canoser.cursor import Cursor
-from canoser.types import type_mapping
 from canoser.bool_t import BoolT
 from canoser.struct import TypedProperty
+from canoser.types import type_mapping
 
 
 class RustOptional(Base):
@@ -21,7 +20,6 @@ class RustOptional(Base):
             self.__dict__[name] = value
         else:
             raise TypeError(f"{name} not allowed to modify in {self}.")
-
 
     @classmethod
     def encode(cls, optional):
@@ -45,7 +43,6 @@ class RustOptional(Base):
     def check_value(cls, value):
         if not isinstance(value, cls):
             raise TypeError('value {} is not {} type'.format(value, cls))
-
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

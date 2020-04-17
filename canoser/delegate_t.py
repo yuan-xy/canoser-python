@@ -23,8 +23,8 @@ class DelegateT(Base):
 
     @classmethod
     def to_json_serializable(cls, value):
-        #TODO: bad smell
-        #if hasattr(cls, "to_json_serializable"):
+        # TODO: bad smell
+        # if hasattr(cls, "to_json_serializable"):
         if 'to_json_serializable' in cls.__dict__.keys():
             return cls.to_json_serializable(value)
         return cls.dtype().to_json_serializable(value)

@@ -1,6 +1,5 @@
 from canoser.cursor import Cursor
-from io import StringIO
-import json
+
 
 class Base:
     """
@@ -16,7 +15,6 @@ class Base:
     def to_json_serializable(acls, value)
     """
 
-
     def serialize(self):
         return self.__class__.encode(self)
 
@@ -28,4 +26,3 @@ class Base:
             raise IOError("bytes not all consumed:{}, {}".format(
                 len(buffer), cursor.offset))
         return ret
-

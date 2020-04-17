@@ -1,5 +1,4 @@
 from canoser.base import Base
-from canoser.cursor import Cursor
 from canoser.types import type_mapping
 import json
 
@@ -25,7 +24,6 @@ class TypedProperty:
             check(value)
         else:
             raise TypeError('{} has no check_value method'.format(datatype))
-
 
 
 class Struct(Base):
@@ -59,7 +57,6 @@ class Struct(Base):
         # Check for any remaining unknown arguments
         if kwargs:
             raise TypeError('Invalid argument(s): {}'.format(','.join(kwargs)))
-
 
     @classmethod
     def encode(cls, obj):
@@ -116,4 +113,3 @@ class Struct(Base):
     def to_json(self, sort_keys=False, indent=4):
         amap = self.to_json_serializable()
         return json.dumps(amap, sort_keys=sort_keys, indent=indent)
-

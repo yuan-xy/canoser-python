@@ -1,6 +1,7 @@
 from canoser.base import Base
 from canoser.int_type import Uint32
 
+
 class MapT(Base):
 
     def __init__(self, ktype, vtype):
@@ -25,11 +26,11 @@ class MapT(Base):
             k = self.ktype.decode(cursor)
             v = self.vtype.decode(cursor)
             if isinstance(k, list) and isinstance(k[0], int):
-                #python doesn't support list as key in dict, so we change list to bytes
+                # python doesn't support list as key in dict, so we change list to bytes
                 kvs[bytes(k)] = v
             else:
                 kvs[k] = v
-        #TODO: check the key order of kvs, because lcs has order when serialize map.
+        # TODO: check the key order of kvs, because lcs has order when serialize map.
         return kvs
 
     def check_value(self, kvs):
@@ -37,7 +38,7 @@ class MapT(Base):
             raise TypeError(f"{kvs} is not a dict.")
         for k, v in kvs.items():
             if isinstance(self.ktype, list) or \
-                (hasattr(self.ktype, 'delegate_type') and isinstance(self.ktype.delegate_type, list)):
+                    (hasattr(self.ktype, 'delegate_type') and isinstance(self.ktype.delegate_type, list)):
                 from canoser.types import BytesT
                 BytesT().check_value(k)
             else:
@@ -51,10 +52,8 @@ class MapT(Base):
 
     def to_json_serializable(cls, obj):
         amap = {}
-        for k,v in obj.items():
+        for k, v in obj.items():
             kk = cls.ktype.to_json_serializable(k)
             vv = cls.vtype.to_json_serializable(v)
             amap[kk] = vv
         return amap
-
-
