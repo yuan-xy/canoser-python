@@ -18,15 +18,11 @@ install:
     - pip install "pip>=7.0" wheel
     - pip install -r requirements.txt
     - pip install -r dev-requirements.txt
+    - pip install codecov
 
 script:
     - python setup.py install
-    - python -m pytest
+    - python -m pytest --cov=canoser
 
-# notifications:
-#   webhooks:
-#     urls:
-#       - http://hostname/travis
-#     on_success: always
-#     on_failure: always
-#     on_start: always
+after_success:
+    - codecov
